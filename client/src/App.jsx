@@ -7,10 +7,14 @@ import MyProfile from './pages/MyProfile';
 import MyAppointment from './pages/MyAppointment';
 import About from './pages/About';
 import Appointment from './pages/Appointment';
+import Navbar from './components/Navbar';
+import ToggleMode from './components/ToggleMode';
 
 function App() {
   return (
     <div className="mx-4 sm:mx-[10%]">
+      <Navbar />
+      <ToggleMode />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/doctors" element={<Doctors />} />
