@@ -3,7 +3,10 @@ import { specialityData } from '../assets/assets_frontend/assets';
 
 function SpacialityMenu() {
   return (
-    <div className="flex flex-col items-center gap-4 py-16 " id="speciality">
+    <div
+      className="flex flex-col items-center gap-4 py-5 md:py-10 lg:py-16"
+      id="speciality"
+    >
       <h1 className="text-3xl font-bold">Find by Speciality</h1>
       <p className="text-center text-sm ">
         We have a wide range of specialities to choose from. or a child doctor,

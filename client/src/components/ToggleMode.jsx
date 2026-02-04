@@ -18,7 +18,7 @@ function ToggleMode() {
   }, [isDark]);
 
   return (
-    <div className=" flex justify-end items-center">
+    <div className=" flex justify-end items-center pt-20">
       <button
         onClick={() => setIsDark(!isDark)}
         className="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700"

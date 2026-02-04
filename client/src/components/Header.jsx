@@ -2,7 +2,7 @@ import { assets } from '../assets/assets_frontend/assets.js';
 
 function Header() {
   return (
-    <div className="py-20">
+    <div className="py-5 md:py-10lg:py-20 ">
       <div className="">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 lg:w-2/3">
