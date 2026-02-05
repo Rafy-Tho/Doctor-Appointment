@@ -1,94 +1,125 @@
 import { assets } from '../assets/assets_frontend/assets.js';
 import { NavLink, useNavigate } from 'react-router-dom';
-import ToggleMode from './ToggleMode.jsx';
 import { useState } from 'react';
 
 function Navbar() {
   const navigate = useNavigate();
-  const [showMenu, setShowMenu] = useState(false);
   const [token, setToken] = useState(true);
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="flex items-center justify-between text-sm py-4 mb-5 border-b ">
-      <img
-        className="w-44 cursor-pointer dark:invert"
-        src={assets.logo}
-        alt="logo"
-      />
-      <ul className="hidden md:flex items-start gap-5 font-medium">
-        <NavLink to="/">
-          <li className="py-1">Home</li>
-          <hr className="border-none outline-none h-0.5 bg-gray-600 dark:bg-gray-400 hidden" />
-        </NavLink>
-        <NavLink to="/doctors">
-          <li className="py-1">All Doctors</li>
-          <hr className="border-none outline-none h-0.5 bg-gray-600 dark:bg-gray-400 hidden" />
-        </NavLink>
-        <NavLink to="/contact">
-          <li className="py-1">Contact</li>
-          <hr className="border-none outline-none h-0.5 bg-gray-600 dark:bg-gray-400 hidden" />
-        </NavLink>
-        <NavLink to="/about">
-          <li className="py-1">About</li>
-          <hr className="border-none outline-none h-0.5 bg-gray-600 dark:bg-gray-400 hidden" />
-        </NavLink>
-      </ul>
-      <div>
-        {token && (
-          <div
-            className="flex items-center gap-2 cursor-pointer relative "
-            onClick={() => setOpen(!open)}
-          >
-            <img className="w-8 rounded-full" src={assets.profile_pic} alt="" />
-            <img className="w-2.5" src={assets.dropdown_icon} alt="" />
+  const [openProfile, setOpenProfile] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
 
-            {open && (
-              <div className="absolute top-10 right-0 z-20 ">
-                <div className="min-w-48 bg-slate-300 dark:bg-slate-800 p-2 rounded-md shadow-lg">
+  return (
+    <nav className="fixed top-0 left-0 w-full z-20 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700">
+      <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto py-4">
+        {/* LOGO */}
+        <img
+          src={assets.logo}
+          alt="logo"
+          onClick={() => navigate('/')}
+          className="w-36 cursor-pointer dark:invert"
+        />
+
+        {/* RIGHT SIDE */}
+        <div className="flex items-center md:order-2 gap-3 relative">
+          {/* PROFILE / LOGIN */}
+          {token ? (
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => setOpenProfile(!openProfile)}
+            >
+              <img className="w-8 rounded-full" src={assets.profile_pic} />
+              <img className="w-2.5" src={assets.dropdown_icon} />
+
+              {openProfile && (
+                <div className="absolute top-12 right-0 min-w-48 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg p-2">
                   <p
+                    className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded cursor-pointer"
                     onClick={() => {
-                      setOpen(!open);
+                      setOpenProfile(false);
                       navigate('/my-profile');
                     }}
-                    className="hover:text-blue-500"
                   >
                     My Profile
                   </p>
                   <p
+                    className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded cursor-pointer"
                     onClick={() => {
-                      setOpen(!open);
+                      setOpenProfile(false);
                       navigate('/my-appointment');
                     }}
-                    className="hover:text-blue-500"
                   >
                     My Appointment
                   </p>
                   <p
+                    className="px-3 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded cursor-pointer"
                     onClick={() => {
-                      setOpen(!open);
+                      setOpenProfile(false);
                       setToken(false);
                     }}
-                    className="hover:text-red-500"
                   >
                     Logout
                   </p>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-        {!token && (
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate('/login')}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-md"
+            >
+              Get Started
+            </button>
+          )}
+
+          {/* MOBILE MENU BUTTON */}
           <button
-            onClick={() => {
-              navigate('/login');
-            }}
-            className="px-4 py-1 border-2  rounded-md cursor-pointer  dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 "
+            onClick={() => setOpenMobile(!openMobile)}
+            className="md:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700"
           >
-            Create account
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
-        )}
+        </div>
+
+        {/* NAV LINKS */}
+        <div
+          className={`w-full md:flex md:w-auto md:order-1 ${
+            openMobile ? 'block' : 'hidden'
+          }`}
+        >
+          <ul className="flex flex-col md:flex-row gap-4 md:gap-8 mt-4 md:mt-0 font-medium bg-gray-50 dark:bg-slate-800 md:bg-transparent p-4 md:p-0 rounded-lg">
+            {['/', '/doctors', '/about', '/contact'].map((path, i) => (
+              <NavLink
+                key={i}
+                to={path}
+                onClick={() => {
+                  setOpenMobile(false);
+                  scrollTo(0, 0);
+                }}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-md transition ${
+                    isActive
+                      ? 'text-indigo-600'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-indigo-600'
+                  }`
+                }
+              >
+                {path === '/'
+                  ? 'Home'
+                  : path.replace('/', '').replace('-', ' ')}
+              </NavLink>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }
 

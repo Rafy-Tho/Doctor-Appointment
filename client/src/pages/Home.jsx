@@ -1,5 +1,18 @@
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import SpacialityMenu from '../components/SpacialityMenu';
+import ToggleMode from '../components/ToggleMode';
+import TopDoctors from '../components/TopDoctors';
+
 function Home() {
-  return <div></div>;
+  return (
+    <div>
+      <Header />
+      <SpacialityMenu />
+      <TopDoctors />
+      <Footer />
+    </div>
+  );
 }
 
 export default Home;

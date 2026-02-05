@@ -2,3 +2,10 @@
 
 /* THIS enables dark mode */
 @custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  @apply transition-all duration-300;
+}
+::-webkit-scrollbar {
+  @apply hidden;
+}
