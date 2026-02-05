@@ -13,10 +13,10 @@ function SpacialityMenu() {
         we have the right doctor for you.
       </p>
       <div className="flex gap-4 sm:justify-center pt-5 w-full overflow-scroll">
-        {specialityData.map((item) => (
+        {specialityData.map((item, index) => (
           <Link
             onClick={() => scrollTo(0, 0)}
-            key={item.id}
+            key={index}
             to={`/doctors/${item.speciality}`}
             className="flex flex-col items-center text-xs cursor-pointer shrink-0 hover:translate-y-2.5"
           >

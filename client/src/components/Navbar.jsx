@@ -10,7 +10,7 @@ function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-20 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto py-4">
         {/* LOGO */}
         <img
           src={assets.logo}
@@ -99,7 +99,10 @@ function Navbar() {
               <NavLink
                 key={i}
                 to={path}
-                onClick={() => setOpenMobile(false)}
+                onClick={() => {
+                  setOpenMobile(false);
+                  scrollTo(0, 0);
+                }}
                 className={({ isActive }) =>
                   `px-3 py-2 rounded-md transition ${
                     isActive
