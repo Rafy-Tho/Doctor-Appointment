@@ -1,3 +1,4 @@
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import SpacialityMenu from '../components/SpacialityMenu';
 import ToggleMode from '../components/ToggleMode';
@@ -9,6 +10,7 @@ function Home() {
       <Header />
       <SpacialityMenu />
       <TopDoctors />
+      <Footer />
     </div>
   );
 }
