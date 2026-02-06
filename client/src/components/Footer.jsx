@@ -2,7 +2,7 @@ import { assets } from '../assets/assets_frontend/assets';
 
 function Footer() {
   return (
-    <footer className=" py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-20">
+    <footer className=" py-12 md:py-16 lg:py-24 ">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-6 gap-8 md:gap-16">
         <div className="lg:col-span-3 space-y-6">
           <a href="https://prebuiltui.com" className="block">

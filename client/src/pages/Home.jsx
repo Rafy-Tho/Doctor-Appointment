@@ -10,7 +10,6 @@ function Home() {
       <Header />
       <SpacialityMenu />
       <TopDoctors />
-      <Footer />
     </div>
   );
 }

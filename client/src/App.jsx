@@ -9,6 +9,7 @@ import About from './pages/About';
 import Appointment from './pages/Appointment';
 import Navbar from './components/Navbar';
 import ToggleMode from './components/ToggleMode';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/appointment/:doctorId" element={<Appointment />} />
       </Routes>
+      <Footer />
     </div>
   );
 }
