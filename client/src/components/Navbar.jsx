@@ -9,8 +9,8 @@ function Navbar() {
   const [openMobile, setOpenMobile] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-20 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700">
-      <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto py-4">
+    <nav className="fixed top-0 left-0 w-full z-20 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700  ">
+      <div className="max-w-7xl sm:mx-[5%] md:mx-[7%] lg:mx-[10%] flex flex-wrap items-center justify-between  py-4 mx-4">
         {/* LOGO */}
         <img
           src={assets.logo}
