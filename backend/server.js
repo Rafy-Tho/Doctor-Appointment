@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./configs/database');
 const ENV = require('./configs/env');
+const notFound = require('./middleware/notFound');
+const errorMiddleware = require('./middleware/errorMiddleware');
+const userRouter = require('./routes/userRoute');
 // configure environment variables
 
 const app = express();
@@ -13,6 +16,12 @@ app.use(
 );
 // configure database connection
 connectDB();
+// route
+
+app.use('/api/users', userRouter);
+// middleware handler error
+app.use(notFound);
+app.use(errorMiddleware);
 // configure server port
 const port = ENV.PORT || 3000;
 // start server

@@ -9,10 +9,11 @@ import About from './pages/About';
 import Appointment from './pages/Appointment';
 import Navbar from './components/Navbar';
 import ToggleMode from './components/ToggleMode';
+import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="mx-4 sm:mx-[10%]">
+    <div className="mx-4 sm:mx-[5%] md:mx-[7%] lg:mx-[10%]">
       <Navbar />
       <ToggleMode />
       <Routes>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/appointment/:doctorId" element={<Appointment />} />
       </Routes>
+      <Footer />
     </div>
   );
 }
