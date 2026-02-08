@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema({
         'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character',
     },
   },
+  role: { type: String, default: 'patient' },
 });
 // Hash password before saving
 userSchema.pre('save', async function (next) {
