@@ -5,6 +5,7 @@ const ENV = require('./configs/env');
 const notFound = require('./middleware/notFound');
 const errorMiddleware = require('./middleware/errorMiddleware');
 const userRouter = require('./routes/userRoute');
+const connectCloudinary = require('./configs/cloudinary');
 // configure environment variables
 
 const app = express();
@@ -16,9 +17,12 @@ app.use(
 );
 // configure database connection
 connectDB();
+// configure cloudinary
+connectCloudinary();
+
 // route
 
-app.use('/api/users', userRouter);
+app.use('/api/v1/user', userRouter);
 // middleware handler error
 app.use(notFound);
 app.use(errorMiddleware);

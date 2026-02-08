@@ -5,10 +5,12 @@ const jwt = require('jsonwebtoken');
 const ENV = require('../configs/env');
 
 const authenticateAdmin = catchAsyncHandler(async (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) {
+  const authHeader = req.header('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return next(new AppError('Not authorized to access this route', 401));
   }
+  const token = authHeader.replace('Bearer ', '');
+
   const decoded = jwt.verify(token, ENV.JWT_SECRET);
   req.admin = await Admin.findById(decoded.id);
   if (!req.admin) {

@@ -5,10 +5,13 @@ const ENV = require('../configs/env');
 const Doctor = require('../models/Doctor');
 
 const authenticateDoctor = catchAsyncHandler(async (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) {
+  const authHeader = req.header('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return next(new AppError('Not authorized to access this route', 401));
   }
+
+  const token = authHeader.replace('Bearer ', '');
+
   const decoded = jwt.verify(token, ENV.JWT_SECRET);
   req.doctor = await Doctor.findById(decoded.id);
   if (!req.doctor) {
