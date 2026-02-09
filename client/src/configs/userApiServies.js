@@ -9,7 +9,7 @@ const userApiService = {
 
   getProfile: () => helperAxiosInstance.get('/user/profile'),
 
-  updateProfile: (formData) =>
+  updateProfile: ({ formData }) =>
     helperAxiosInstance.patch('/user/profile', formData),
 
   bookAppointment: ({ slotDate, slotTime, doctorId }) =>
