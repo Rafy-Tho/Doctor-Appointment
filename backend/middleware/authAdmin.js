@@ -14,7 +14,7 @@ const authenticateAdmin = catchAsyncHandler(async (req, res, next) => {
   const decoded = jwt.verify(token, ENV.JWT_SECRET);
   req.admin = await Admin.findById(decoded.id);
   if (!req.admin) {
-    return next(new AppError('Admin not found', 404));
+    return next(new AppError('Not authorized to access this route', 404));
   }
   next();
 });

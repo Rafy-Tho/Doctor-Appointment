@@ -43,18 +43,23 @@ doctorRouter.get(
   appointmentsDoctor,
 );
 doctorRouter.patch(
-  '/appointments/:id',
+  '/appointments/:appointmentId/cancel',
   authenticateDoctor,
   authorizeDoctor(),
   appointmentCancel,
 );
 doctorRouter.patch(
-  '/appointments/:id',
+  '/appointments/:appointmentId/complete',
   authenticateDoctor,
   authorizeDoctor(),
   appointmentComplete,
 );
-doctorRouter.get('/list', authenticateDoctor, authorizeDoctor(), doctorList);
+doctorRouter.get(
+  '/doctor-list',
+  authenticateDoctor,
+  authorizeDoctor(),
+  doctorList,
+);
 doctorRouter.patch(
   '/availability',
   authenticateDoctor,

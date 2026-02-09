@@ -1,14 +1,25 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const validator = require('validator')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const validator = require('validator');
 
 const adminSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, validate: [validator.isEmail, 'Invalid email address'] ,lowercase: true,},
-  password: { type: String, required: true, select: false, minlength: [8, 'Password must be at least 8 characters long'],validate: [validator.isStrongPassword, 'Password must be strong'] },
+  email: {
+    type: String,
+    required: true,
+    validate: [validator.isEmail, 'Invalid email address'],
+    lowercase: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
+    minlength: [8, 'Password must be at least 8 characters long'],
+    validate: [validator.isStrongPassword, 'Password must be strong'],
+  },
   role: { type: String, default: 'admin' },
-})
+});
 // Hash password before saving
 adminSchema.pre('save', async function () {
   // Only hash if password is new or modified

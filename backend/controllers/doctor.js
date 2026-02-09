@@ -89,8 +89,9 @@ const appointmentComplete = catchAsyncHandler(async (req, res, next) => {
   });
 });
 // @des Get list of available doctors
-// @route GET /api/doctor/list
+// @route GET /api/doctor/doctor-list
 // @access Public
+// eslint-disable-next-line no-unused-vars
 const doctorList = catchAsyncHandler(async (req, res, next) => {
   const doctors = await Doctor.find({ available: true });
   res.status(200).json({
@@ -128,7 +129,7 @@ const doctorProfile = catchAsyncHandler(async (req, res, next) => {
   });
 });
 // @des Update profile of a doctor
-// @route PATCH /api/doctor/profile
+// @route PATCH /api/doctor/update-profile
 // @access Private
 const updateDoctorProfile = catchAsyncHandler(async (req, res, next) => {
   const { fees, address, available } = req.body;
