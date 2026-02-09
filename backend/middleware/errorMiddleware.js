@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const errorMiddleware = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Server Error';
@@ -22,6 +23,17 @@ const errorMiddleware = (err, req, res, next) => {
     statusCode = 400;
     const field = Object.keys(err.keyValue)[0];
     message = `Duplicate field value entered for ${field}: ${err.keyValue[field]}`;
+  }
+  // JWT invalid token
+  if (err.name === 'JsonWebTokenError') {
+    statusCode = 401;
+    message = 'Invalid token';
+  }
+
+  // JWT expired token
+  if (err.name === 'TokenExpiredError') {
+    statusCode = 401;
+    message = 'Token expired';
   }
 
   res.status(statusCode).json({

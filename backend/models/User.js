@@ -26,26 +26,17 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Password is required'],
     minlength: [8, 'Password must be at least 8 characters long'],
     select: false,
-    validate: {
-      validator: function (value) {
-        // Minimum 1 uppercase, 1 lowercase, 1 number, 1 special character
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-          value,
-        );
-      },
-      message:
-        'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character',
-    },
+    validate: [validator.isStrongPassword, 'Password must be strong'],
   },
+  role: { type: String, default: 'patient' },
 });
 // Hash password before saving
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function () {
   // Only hash if password is new or modified
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password')) return;
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
 // Compare password method
 userSchema.methods.comparePassword = async function (candidatePassword) {
