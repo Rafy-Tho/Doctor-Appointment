@@ -10,6 +10,7 @@ const adminSchema = new mongoose.Schema({
     required: true,
     validate: [validator.isEmail, 'Invalid email address'],
     lowercase: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -24,7 +25,6 @@ const adminSchema = new mongoose.Schema({
 adminSchema.pre('save', async function () {
   // Only hash if password is new or modified
   if (!this.isModified('password')) return;
-
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

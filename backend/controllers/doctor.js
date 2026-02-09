@@ -13,7 +13,7 @@ const doctorLogin = catchAsyncHandler(async (req, res, next) => {
     return next(new AppError('Please provide email and password', 400));
   }
   // Check if doctor exists
-  const doctor = await Doctor.findOne({ email });
+  const doctor = await Doctor.findOne({ email }).select('+password');
   if (!doctor) {
     return next(new AppError('Invalid email or password', 401));
   }
@@ -38,14 +38,14 @@ const appointmentsDoctor = catchAsyncHandler(async (req, res, next) => {
   if (!doctor) {
     return next(new AppError('Doctor not found', 404));
   }
-  const appointments = await Appointment.find({ doctor: doctor._id });
+  const appointments = await Appointment.find({ doctorId: doctor._id });
   res.status(200).json({
     success: true,
     appointments,
   });
 });
 // @des Cancel an appointment
-// @route PATCH /api/doctor/appointments/:id/cancel
+// @route PATCH /api/doctor/appointments/:appointmentId/cancel
 // @access Private
 const appointmentCancel = catchAsyncHandler(async (req, res, next) => {
   const appointment = await Appointment.findOne({
@@ -55,10 +55,10 @@ const appointmentCancel = catchAsyncHandler(async (req, res, next) => {
   if (!appointment) {
     return next(new AppError('Appointment not found', 404));
   }
-  if (appointment.status === 'canceled') {
+  if (appointment.cancelled) {
     return next(new AppError('Appointment already canceled', 400));
   }
-  appointment.status = 'canceled';
+  appointment.cancelled = true;
   await appointment.save();
   res.status(200).json({
     success: true,
@@ -77,10 +77,10 @@ const appointmentComplete = catchAsyncHandler(async (req, res, next) => {
   if (!appointment) {
     return next(new AppError('Appointment not found', 404));
   }
-  if (appointment.status === 'completed') {
+  if (appointment.isCompleted) {
     return next(new AppError('Appointment already completed', 400));
   }
-  appointment.status = 'completed';
+  appointment.isCompleted = true;
   await appointment.save();
   res.status(200).json({
     success: true,
@@ -155,7 +155,8 @@ const doctorDashboard = catchAsyncHandler(async (req, res, next) => {
   if (!doctor) {
     return next(new AppError('Doctor not found', 404));
   }
-  const appointments = await Appointment.find({ doctor: doctor._id });
+  const appointments = await Appointment.find({ doctorId: doctor._id });
+
   res.status(200).json({
     success: true,
     doctor,

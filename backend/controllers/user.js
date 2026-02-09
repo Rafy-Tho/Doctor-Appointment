@@ -39,7 +39,7 @@ const loginUser = catchAsyncHandler(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new AppError('Invalid email or password', 401));
   }
-  const token = user.getJWTToken();
+  const token = user.generateJWT();
   res.status(200).json({
     success: true,
     token,
@@ -61,7 +61,7 @@ const getUserProfile = catchAsyncHandler(async (req, res, next) => {
 const updateUserProfile = catchAsyncHandler(async (req, res, next) => {
   const { name, phone, address, dob, gender } = req.body;
   const imageFile = req.file;
-  console.log(imageFile);
+
   if (!name && !phone && !address && !dob && !gender && !imageFile) {
     return next(new AppError('At least one field is required', 400));
   }
@@ -74,7 +74,7 @@ const updateUserProfile = catchAsyncHandler(async (req, res, next) => {
       resource_type: 'image',
       folder: 'image',
     });
-    console.log(imageUpload);
+
     user.image = imageUpload.secure_url;
     // Delete local file
     fs.unlink(imageFile.path, (err) => {
@@ -131,7 +131,6 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
     slotDate,
     slotTime,
     amount: doctor.fees,
-    date: Date.now(),
   });
   await appointment.save();
   res.status(200).json({
@@ -140,7 +139,7 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
   });
 });
 // @des Cancel an appointment
-// @route POST /api/user/cancel-appointment/:appointmentId
+// @route PATCH /api/user/appointments/:appointmentId/cancel
 // @access Private
 const cancelAppointment = catchAsyncHandler(async (req, res, next) => {
   const { appointmentId } = req.params;

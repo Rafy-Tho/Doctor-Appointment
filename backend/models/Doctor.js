@@ -28,7 +28,7 @@ const doctorSchema = new mongoose.Schema(
     available: { type: Boolean, default: true },
     fees: { type: Number, required: true },
     address: { type: Object, required: true },
-    date: { type: Number, required: true },
+    date: { type: Number, required: true, default: Date.now },
     role: { type: String, default: 'doctor' },
   },
   { minimize: false },

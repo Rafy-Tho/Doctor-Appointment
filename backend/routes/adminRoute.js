@@ -7,6 +7,7 @@ const {
   adminAppointmentsDoctor,
   adminAppointmentsDoctorCancel,
   adminAddDoctor,
+  registerAdmin,
 } = require('../controllers/admin');
 
 const upload = require('../middleware/multer');
@@ -16,9 +17,10 @@ const {
 } = require('../middleware/authAdmin');
 const adminRouter = express.Router();
 
+adminRouter.post('/register', registerAdmin);
 adminRouter.post('/login', loginAdmin);
 adminRouter.patch(
-  '/doctor/:doctorId',
+  '/doctor/:doctorId/availability',
   authenticateAdmin,
   authorizeAdmin(),
   adminChangeDoctorAvailability,
@@ -49,7 +51,7 @@ adminRouter.get(
   adminAppointmentsDoctor,
 );
 adminRouter.patch(
-  '/appointments/:appointmentId',
+  '/appointments/:appointmentId/cancel',
   authenticateAdmin,
   authorizeAdmin(),
   adminAppointmentsDoctorCancel,

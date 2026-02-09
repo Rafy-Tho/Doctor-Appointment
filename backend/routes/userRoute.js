@@ -29,8 +29,8 @@ userRouter.post(
   authorizeUser(),
   bookAppointment,
 );
-userRouter.post(
-  '/cancel-appointment/:appointmentId',
+userRouter.patch(
+  '/appointments/:appointmentId/cancel',
   authenticateUser,
   authorizeUser(),
   cancelAppointment,

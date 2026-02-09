@@ -17,6 +17,7 @@ app.use(
     origin: 'http://localhost:5173',
   }),
 );
+
 // configure database connection
 connectDB();
 // configure cloudinary
@@ -26,9 +27,11 @@ connectCloudinary();
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/doctor', doctorRouter);
 app.use('/api/v1/user', userRouter);
+
 // middleware handler error
 app.use(notFound);
 app.use(errorMiddleware);
+
 // configure server port
 const port = ENV.PORT || 3000;
 // start server

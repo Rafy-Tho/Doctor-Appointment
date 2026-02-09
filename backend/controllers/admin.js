@@ -6,6 +6,27 @@ const Doctor = require('../models/Doctor');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const User = require('../models/User');
+// @des Register admin
+// @route POST /api/admin/register
+// @access Public
+const registerAdmin = catchAsyncHandler(async (req, res, next) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return next(new AppError('Please provide name, email, and password', 400));
+  }
+  const admin = await Admin.create({
+    name,
+    email,
+    password,
+  });
+  // Generate token
+  const token = admin.generateJWT();
+  // Send response
+  res.status(201).json({
+    success: true,
+    token,
+  });
+});
 // @des Login admin
 // @route POST /api/admin/login
 // @access Public
@@ -14,7 +35,7 @@ const loginAdmin = catchAsyncHandler(async (req, res, next) => {
   if (!email || !password) {
     return next(new AppError('Please provide email and password', 400));
   }
-  const admin = await Admin.findOne({ email });
+  const admin = await Admin.findOne({ email }).select('+password');
   if (!admin) {
     return next(new AppError('Invalid credentials', 401));
   }
@@ -46,7 +67,7 @@ const adminAppointmentsDoctor = catchAsyncHandler(async (req, res, next) => {
 });
 
 // @des Cancel appointment of doctor
-// @route PATCH /api/admin/appointment/:id
+// @route PATCH /api/admin/appointments/:appointmentId/cancel
 // @access Private
 const adminAppointmentsDoctorCancel = catchAsyncHandler(
   async (req, res, next) => {
@@ -57,6 +78,9 @@ const adminAppointmentsDoctorCancel = catchAsyncHandler(
     const appointment = await Appointment.findById(req.params.appointmentId);
     if (!appointment) {
       return next(new AppError('Appointment not found', 404));
+    }
+    if (appointment.cancelled) {
+      return next(new AppError('Appointment already canceled', 400));
     }
     appointment.cancelled = true;
     await appointment.save();
@@ -122,7 +146,7 @@ const adminAddDoctor = catchAsyncHandler(async (req, res, next) => {
   });
 });
 // @des Change doctor availability
-// @route PATCH /api/admin/doctor/:id
+// @route PATCH /api/admin/doctor/:doctorId/availability
 // @access Private
 const adminChangeDoctorAvailability = catchAsyncHandler(
   async (req, res, next) => {
@@ -178,6 +202,7 @@ const adminDashboard = catchAsyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
+  registerAdmin,
   loginAdmin,
   adminAddDoctor,
   adminAppointmentsDoctor,
