@@ -1,27 +1,27 @@
 import helperAxiosInstance from './helperAxiosInstance';
 
 const userApiService = {
-  userLogin: ({ email, password }) =>
+  login: ({ email, password }) =>
     helperAxiosInstance.post('/user/login', { email, password }),
 
-  userRegister: ({ email, password, name }) =>
+  register: ({ email, password, name }) =>
     helperAxiosInstance.post('/user/register', { email, password, name }),
 
-  getUserProfile: () => helperAxiosInstance.get('/user/profile'),
+  getProfile: () => helperAxiosInstance.get('/user/profile'),
 
-  updateUserProfile: ({ formData }) =>
+  updateProfile: ({ formData }) =>
     helperAxiosInstance.patch('/user/profile', formData),
 
-  userBookAppointment: ({ slotDate, slotTime, doctorId }) =>
+  bookAppointment: ({ slotDate, slotTime, doctorId }) =>
     helperAxiosInstance.post(`/user/book-appointment/${doctorId}`, {
       slotDate,
       slotTime,
     }),
 
-  cancelUserAppointment: ({ appointmentId }) =>
+  cancelAppointment: ({ appointmentId }) =>
     helperAxiosInstance.patch(`/user/cancel-appointment/${appointmentId}`),
 
-  listUserAppointments: () => helperAxiosInstance.get('/user/appointments'),
+  listAppointments: () => helperAxiosInstance.get('/user/appointments'),
 };
 
 export default userApiService;

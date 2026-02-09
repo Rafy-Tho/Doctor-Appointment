@@ -1,30 +1,29 @@
 import helperAxiosInstance from './helperAxiosInstance.js';
 
 const doctorApiService = {
-  doctorLogin: ({ email, password }) =>
+  login: ({ email, password }) =>
     helperAxiosInstance.post('/doctor/login', { email, password }),
 
-  getDoctorProfile: () => helperAxiosInstance.get('/doctor/profile'),
+  getProfile: () => helperAxiosInstance.get('/doctor/profile'),
 
-  updateDoctorProfile: ({ fees, address, available }) =>
+  updateProfile: ({ fees, address, available }) =>
     helperAxiosInstance.patch('/doctor/update-profile', {
       fees,
       address,
       available,
     }),
 
-  getDoctorAppointments: () => helperAxiosInstance.get('/doctor/appointments'),
+  getAppointments: () => helperAxiosInstance.get('/doctor/appointments'),
 
-  doctorAppointmentsCancel: ({ appointmentId }) =>
+  cancelAppointment: ({ appointmentId }) =>
     helperAxiosInstance.patch(`/doctor/appointments/${appointmentId}/cancel`),
 
-  doctorAppointmentsComplete: ({ appointmentId }) =>
+  completeAppointment: ({ appointmentId }) =>
     helperAxiosInstance.patch(`/doctor/appointments/${appointmentId}/complete`),
 
-  getDoctorList: () => helperAxiosInstance.get('/doctor/doctor-list'),
+  getDoctorsList: () => helperAxiosInstance.get('/doctor/doctor-list'),
 
-  changeDoctorAvailability: () =>
-    helperAxiosInstance.patch('/doctor/availability'),
+  changeAvailability: () => helperAxiosInstance.patch('/doctor/availability'),
 };
 
 export default doctorApiService;
