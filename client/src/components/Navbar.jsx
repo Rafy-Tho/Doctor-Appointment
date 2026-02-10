@@ -1,6 +1,6 @@
 import { assets } from '../assets/assets_frontend/assets.js';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useAuth from '../hooks/useAuth.js';
 
 function Navbar() {
@@ -8,6 +8,21 @@ function Navbar() {
   const { token, user, logout } = useAuth();
   const [openProfile, setOpenProfile] = useState(false);
   const [openMobile, setOpenMobile] = useState(false);
+  const profileRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setOpenProfile(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-20 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700  ">
@@ -27,6 +42,7 @@ function Navbar() {
             <div
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => setOpenProfile(!openProfile)}
+              ref={profileRef}
             >
               {user?.image ? (
                 <img className="w-8 rounded-full" src={user?.image} />
