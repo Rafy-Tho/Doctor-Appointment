@@ -28,6 +28,7 @@ const doctorLogin = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     token,
+    message: 'Doctor logged in successfully',
   });
 });
 // @des Get appointments of a doctor
@@ -42,6 +43,7 @@ const appointmentsDoctor = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     appointments,
+    message: 'Appointments retrieved successfully',
   });
 });
 // @des Cancel an appointment
@@ -126,6 +128,7 @@ const doctorProfile = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     doctor,
+    message: 'Doctor profile retrieved successfully',
   });
 });
 // @des Update profile of a doctor
@@ -161,6 +164,7 @@ const doctorDashboard = catchAsyncHandler(async (req, res, next) => {
     success: true,
     doctor,
     appointments,
+    message: 'Doctor dashboard retrieved successfully',
   });
 });
 

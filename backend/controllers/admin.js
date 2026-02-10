@@ -25,6 +25,7 @@ const registerAdmin = catchAsyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     token,
+    message: 'Admin registered successfully',
   });
 });
 // @des Login admin
@@ -49,6 +50,7 @@ const loginAdmin = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     token,
+    message: 'Admin logged in successfully',
   });
 });
 // @des Get appointments of all doctors
@@ -63,6 +65,7 @@ const adminAppointmentsDoctor = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     appointments,
+    message: 'Appointments retrieved successfully',
   });
 });
 
@@ -87,6 +90,7 @@ const adminAppointmentsDoctorCancel = catchAsyncHandler(
     res.status(200).json({
       success: true,
       appointment,
+      message: 'Appointment canceled successfully',
     });
   },
 );
@@ -143,6 +147,7 @@ const adminAddDoctor = catchAsyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     doctor,
+    message: 'Doctor added successfully',
   });
 });
 // @des Change doctor availability
@@ -165,6 +170,7 @@ const adminChangeDoctorAvailability = catchAsyncHandler(
     res.status(200).json({
       success: true,
       doctor,
+      message: 'Doctor availability updated successfully',
     });
   },
 );
@@ -180,6 +186,7 @@ const adminAllDoctors = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     doctors,
+    message: 'Doctors retrieved successfully',
   });
 });
 // @des Get dashboard stats
@@ -198,6 +205,7 @@ const adminDashboard = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     stats,
+    message: 'Dashboard stats retrieved successfully',
   });
 });
 

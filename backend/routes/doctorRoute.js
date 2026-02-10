@@ -54,12 +54,7 @@ doctorRouter.patch(
   authorizeDoctor(),
   appointmentComplete,
 );
-doctorRouter.get(
-  '/doctor-list',
-  authenticateDoctor,
-  authorizeDoctor(),
-  doctorList,
-);
+doctorRouter.get('/doctor-list', doctorList);
 doctorRouter.patch(
   '/availability',
   authenticateDoctor,

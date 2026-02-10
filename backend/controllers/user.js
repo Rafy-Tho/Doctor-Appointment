@@ -21,6 +21,7 @@ const registerUser = catchAsyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     token,
+    message: 'User registered successfully',
   });
 });
 // @des Login a user
@@ -43,6 +44,7 @@ const loginUser = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     token,
+    message: 'User logged in successfully',
   });
 });
 const getUserProfile = catchAsyncHandler(async (req, res, next) => {
@@ -53,6 +55,7 @@ const getUserProfile = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     user,
+    message: 'User profile retrieved successfully',
   });
 });
 // @des Update user profile
@@ -93,6 +96,7 @@ const updateUserProfile = catchAsyncHandler(async (req, res, next) => {
   // Send response
   res.status(200).json({
     success: true,
+    user,
     message: 'User profile updated successfully',
   });
 });
@@ -135,6 +139,7 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
   await appointment.save();
   res.status(200).json({
     success: true,
+    appointment,
     message: 'Appointment booked successfully',
   });
 });
@@ -165,6 +170,7 @@ const cancelAppointment = catchAsyncHandler(async (req, res, next) => {
   await appointment.save();
   res.status(200).json({
     success: true,
+    appointment,
     message: 'Appointment cancelled successfully',
   });
 });
@@ -177,6 +183,7 @@ const listAppointments = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     appointments,
+    message: 'Appointments retrieved successfully',
   });
 });
 module.exports = {
