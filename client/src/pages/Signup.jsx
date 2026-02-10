@@ -1,31 +1,48 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import useUserLogin from '../hooks/user/useUserLogin';
+import useUserRegister from '../hooks/user/useUserRegister';
 
-import { validateLogin } from '../utils/validators';
+import { validateSignup } from '../utils/validators';
 
-function Login() {
+function Signup() {
+  const [name, setName] = useState('john_doe');
   const [email, setEmail] = useState('john.doe@example.com');
   const [password, setPassword] = useState('John@1234');
   const [errors, setErrors] = useState({});
+  const { registerUser, isPending } = useUserRegister();
 
-  const { loginUser, isPending } = useUserLogin();
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
     setErrors({});
-    const validationErrors = validateLogin({ email, password });
+    const validationErrors = validateSignup({ name, email, password });
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    loginUser({ email, password });
+
+    registerUser({ name, email, password });
   };
 
   return (
     <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-sm shadow-lg">
-        <p className="text-2xl font-semibold">Login</p>
-        <p>Please log in to book appointment</p>
+      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl  text-sm shadow-lg">
+        <p className="text-2xl font-semibold">Create Account</p>
+        <p>Please sign up to book appointment</p>
+
+        <div className="w-full ">
+          <p>Full Name</p>
+          <input
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            className="border border-slate-400 rounded w-full p-2 mt-1"
+            type="text"
+            required
+          />
+          {errors?.name && (
+            <p className="text-red-500 text-sm">{errors.name}</p>
+          )}
+        </div>
 
         <div className="w-full ">
           <p>Email</p>
@@ -54,19 +71,21 @@ function Login() {
           )}
         </div>
         <button
-          className={`${isPending ? 'bg-slate-400 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'} text-slate-800 w-full py-2 my-2 rounded-md text-base`}
+          disabled={isPending}
+          className={` text-slate-800  w-full py-2 my-2 rounded-md text-base cursor-pointer ${
+            isPending ? 'cursor-not-allowed bg-slate-400' : 'bg-blue-500'
+          }`}
         >
-          {isPending ? 'Logging in...' : 'Login'}
+          {isPending ? 'Creating account...' : 'Create account'}
         </button>
-
         <p>
-          Create an new account?{' '}
+          Already have an account?{' '}
           <Link
             onClick={() => scrollTo(0, 0)}
-            to="/register"
+            to="/login"
             className=" text-blue-500 underline cursor-pointer"
           >
-            Click here
+            Login here
           </Link>
         </p>
       </div>
@@ -74,4 +93,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

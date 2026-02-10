@@ -1,10 +1,14 @@
 export const initialState = {
-  user: null,
-  token: null,
+  user: localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user'))
+    : null,
+  token: localStorage.getItem('token')
+    ? JSON.parse(localStorage.getItem('token'))
+    : null,
 };
 export function authReducer(state, action) {
   switch (action.type) {
-    case 'RESTORE_AUTH':
+    case 'REGISTER':
       return {
         ...state,
         user: action.payload.user,
@@ -28,20 +32,4 @@ export function authReducer(state, action) {
     default:
       return state;
   }
-}
-export function initAuth() {
-  const storedUser = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
-
-  if (storedUser && token) {
-    return {
-      user: JSON.parse(storedUser),
-      token: JSON.parse(token),
-    };
-  }
-
-  return {
-    user: null,
-    token: null,
-  };
 }
