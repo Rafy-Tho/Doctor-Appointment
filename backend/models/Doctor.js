@@ -20,7 +20,7 @@ const doctorSchema = new mongoose.Schema(
       minlength: [8, 'Password must be at least 8 characters long'],
       validate: [validator.isStrongPassword, 'Password must be strong'],
     },
-    image: { type: String, required: true },
+    image: { type: String, required: true, default: 'default.jpg' },
     speciality: { type: String, required: true },
     degree: { type: String, required: true },
     experience: { type: String, required: true },

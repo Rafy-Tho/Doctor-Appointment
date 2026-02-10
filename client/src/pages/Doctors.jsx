@@ -1,6 +1,6 @@
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import { AppContext } from '../contexts/AppContextProvider';
-import { useContext } from 'react';
+
+import useGetDoctors from '../hooks/doctors/useGetDoctors';
 const specialities = [
   'General physician',
   'Gynecologist',
@@ -12,12 +12,15 @@ const specialities = [
 function Doctors() {
   const { speciality } = useParams();
   const navigate = useNavigate();
-  const { doctors } = useContext(AppContext);
+  const { data, isLoading, error } = useGetDoctors();
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!data) return <p>No doctors available</p>;
+  const { doctors } = data;
   // Apply filter when speciality or doctors change
   const filterDoctors = speciality
     ? doctors.filter((doctor) => doctor.speciality === speciality)
     : doctors;
-
   return (
     <div>
       <p className="text-2xl font-bold	 text-center">

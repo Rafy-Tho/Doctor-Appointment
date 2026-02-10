@@ -10,8 +10,10 @@ import Appointment from './pages/Appointment';
 import Navbar from './components/Navbar';
 import ToggleMode from './components/ToggleMode';
 import Footer from './components/Footer';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
+  const theme = localStorage.getItem('theme');
   return (
     <div className="mx-4 sm:mx-[5%] md:mx-[7%] lg:mx-[10%]">
       <Navbar />
@@ -28,6 +30,16 @@ function App() {
         <Route path="/appointment/:doctorId" element={<Appointment />} />
       </Routes>
       <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme={theme}
+      />
     </div>
   );
 }

@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../contexts/AppContextProvider.jsx';
-import { useContext } from 'react';
-
+import useGetDoctors from '../hooks/doctors/useGetDoctors';
 function TopDoctors() {
-  const { doctors } = useContext(AppContext);
   const navigate = useNavigate();
+  const { data, isLoading, error } = useGetDoctors();
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!data) return <p>No doctors available</p>;
+  const { doctors } = data;
+  console.log(doctors);
   return (
     <div className="flex flex-col items-center gap-4 lg:my-16 md:my-10 my-6 md:mx-10 ">
       <h1 className="text-3xl font-medium">Top Doctors to Book</h1>
