@@ -1,10 +1,11 @@
 import { assets } from '../assets/assets_frontend/assets.js';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import useAuth from '../hooks/useAuth.js';
 
 function Navbar() {
   const navigate = useNavigate();
-  const [token, setToken] = useState(true);
+  const { token, user, logout } = useAuth();
   const [openProfile, setOpenProfile] = useState(false);
   const [openMobile, setOpenMobile] = useState(false);
 
@@ -27,7 +28,13 @@ function Navbar() {
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => setOpenProfile(!openProfile)}
             >
-              <img className="w-8 rounded-full" src={assets.profile_pic} />
+              {user?.image ? (
+                <img className="w-8 rounded-full" src={user?.image} />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center">
+                  {user?.name?.charAt(0).toUpperCase()}
+                </div>
+              )}
               <img className="w-2.5" src={assets.dropdown_icon} />
 
               {openProfile && (
@@ -54,7 +61,8 @@ function Navbar() {
                     className="px-3 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded cursor-pointer"
                     onClick={() => {
                       setOpenProfile(false);
-                      setToken(false);
+                      navigate('/login');
+                      logout();
                     }}
                   >
                     Logout

@@ -12,6 +12,7 @@ import ToggleMode from './components/ToggleMode';
 import Footer from './components/Footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Signup from './pages/Signup';
 function App() {
   const theme = localStorage.getItem('theme');
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/doctors/:speciality" element={<Doctors />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/my-appointment" element={<MyAppointment />} />
         <Route path="/my-profile" element={<MyProfile />} />
