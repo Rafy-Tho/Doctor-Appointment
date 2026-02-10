@@ -29,6 +29,18 @@ export function authReducer(state, action) {
         token: null,
       };
 
+    case 'UPDATE_PROFILE':
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case 'GET_PROFILE':
+      return {
+        ...state,
+        user: action.payload,
+      };
+
     default:
       return state;
   }

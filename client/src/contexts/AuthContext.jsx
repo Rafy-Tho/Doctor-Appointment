@@ -12,11 +12,23 @@ export function AuthProvider({ children }) {
     localStorage.setItem('token', JSON.stringify(userData.token));
     dispatch({ type: 'LOGIN', payload: userData });
   };
+
   const register = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData.user));
     localStorage.setItem('token', JSON.stringify(userData.token));
     dispatch({ type: 'REGISTER', payload: userData });
   };
+
+  const updateProfile = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    dispatch({ type: 'UPDATE_PROFILE', payload: userData });
+  };
+
+  const getProfile = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    dispatch({ type: 'GET_PROFILE', payload: userData });
+  };
+
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
@@ -32,6 +44,8 @@ export function AuthProvider({ children }) {
         login,
         logout,
         register,
+        updateProfile,
+        getProfile,
       }}
     >
       {children}

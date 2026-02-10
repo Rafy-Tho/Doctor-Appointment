@@ -1,6 +1,8 @@
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 import useGetDoctors from '../hooks/doctors/useGetDoctors';
+import ErrorMessage from '../components/ErrorMessage';
+import Loader from '../components/Loader';
 const specialities = [
   'General physician',
   'Gynecologist',
@@ -12,10 +14,13 @@ const specialities = [
 function Doctors() {
   const { speciality } = useParams();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetDoctors();
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (!data) return <p>No doctors available</p>;
+  const { data, isPending, error } = useGetDoctors();
+  if (isPending) return <Loader />;
+  if (error)
+    return (
+      <ErrorMessage message={error?.message || 'Failed to load doctors'} />
+    );
+
   const { doctors } = data;
   // Apply filter when speciality or doctors change
   const filterDoctors = speciality

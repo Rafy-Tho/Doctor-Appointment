@@ -5,16 +5,16 @@ import doctorApiService from '../../configs/doctorApiServices';
 import { showError } from '../../utils/toast';
 
 const useGetDoctors = () => {
-  const { data, isPending, error, isError } = useQuery({
+  const { data, isPending, error } = useQuery({
     queryKey: ['doctors'],
     queryFn: doctorApiService.getDoctorsList,
   });
 
   useEffect(() => {
-    if (isError) {
+    if (error) {
       showError(error?.message || 'Failed to load doctors');
     }
-  }, [isError, error]);
+  }, [error]);
 
   return { data, isPending, error };
 };

@@ -1,11 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import useGetDoctors from '../hooks/doctors/useGetDoctors';
+import Loader from './Loader';
+import ErrorMessage from './ErrorMessage';
 function TopDoctors() {
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetDoctors();
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (!data) return <p>No doctors available</p>;
+  const { data, isPending, error } = useGetDoctors();
+
+  if (isPending) return <Loader />;
+  if (error)
+    return (
+      <ErrorMessage message={error?.message || 'Failed to load doctors'} />
+    );
+
   const { doctors } = data;
   console.log(doctors);
   return (

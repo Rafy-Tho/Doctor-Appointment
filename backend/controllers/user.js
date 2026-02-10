@@ -45,6 +45,7 @@ const loginUser = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     token,
+    user,
     message: 'User logged in successfully',
   });
 });

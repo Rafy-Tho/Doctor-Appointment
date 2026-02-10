@@ -1,26 +1,12 @@
-import { useEffect, useState } from 'react';
+import useTheme from '../hooks/useTheme';
 
 function ToggleMode() {
-  const [isDark, setIsDark] = useState(
-    () => localStorage.getItem('theme') === 'dark',
-  );
-
-  useEffect(() => {
-    const root = document.documentElement;
-
-    if (isDark) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
+  const { toggleTheme } = useTheme();
 
   return (
     <div className=" flex justify-end items-center pt-20">
       <button
-        onClick={() => setIsDark(!isDark)}
+        onClick={() => toggleTheme()}
         className="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
       >
         <svg

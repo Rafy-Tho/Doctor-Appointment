@@ -13,8 +13,9 @@ import Footer from './components/Footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Signup from './pages/Signup';
+import useTheme from './hooks/useTheme';
 function App() {
-  const theme = localStorage.getItem('theme');
+  const { theme } = useTheme();
   return (
     <div className="mx-4 sm:mx-[5%] md:mx-[7%] lg:mx-[10%]">
       <Navbar />
