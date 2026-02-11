@@ -62,7 +62,7 @@ function UpdateProfile() {
           border-4 border-primary/30
           transition group-hover:opacity-80
         "
-            src={image ? URL.createObjectURL(image) : user.image}
+            src={imagePreview || user.image}
             alt=""
           />
 
