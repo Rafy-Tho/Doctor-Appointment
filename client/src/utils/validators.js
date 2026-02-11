@@ -52,6 +52,7 @@ export const validateLogin = ({ email, password }) => {
 };
 export function validate(values) {
   const errors = {};
+  const address = values.address || {};
 
   if (!values.name.trim()) {
     errors.name = 'Name is required';
@@ -63,11 +64,11 @@ export function validate(values) {
     errors.phone = 'Invalid phone number';
   }
 
-  if (!values.address.line1.trim()) {
+  if (!address.line1.trim()) {
     errors.line1 = 'Address line 1 is required';
   }
 
-  if (!values.address.line2.trim()) {
+  if (!address.line2.trim()) {
     errors.line2 = 'Address line 2 is required';
   }
 
