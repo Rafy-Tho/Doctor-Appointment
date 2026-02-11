@@ -9,7 +9,7 @@ function useGetSlotDate({ doctorId }) {
     isPending: isSlotPending,
     error: slotError,
   } = useQuery({
-    queryKey: ['slotDate'],
+    queryKey: ['slotDate', doctorId],
     queryFn: () => userApiService.getSlotDate({ doctorId }),
   });
   useEffect(() => {

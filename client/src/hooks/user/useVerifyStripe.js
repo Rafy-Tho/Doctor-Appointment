@@ -7,8 +7,8 @@ function useVerifyStripe() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { mutate: verifyStripe, isPending } = useMutation({
-    mutationFn: ({ appointmentId, success }) =>
-      userApiService.verifyStripe({ appointmentId, success }),
+    mutationFn: ({ appointmentId, sessionId }) =>
+      userApiService.verifyStripe({ appointmentId, sessionId }),
     mutationKey: ['verifyStripe'],
     onSuccess: (data) => {
       if (data.success) {

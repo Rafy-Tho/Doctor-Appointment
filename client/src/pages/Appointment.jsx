@@ -38,7 +38,7 @@ function Appointment() {
 
   if (isPending || isSlotPending) return <Loader />;
   if (error || slotError)
-    return <ErrorMessage message={error.message || slotError.message} />;
+    return <ErrorMessage message={error?.message || slotError?.message} />;
 
   return (
     <div>

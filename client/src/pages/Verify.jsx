@@ -7,13 +7,14 @@ function Verify() {
   const { verifyStripe } = useVerifyStripe();
   const [searchParams] = useSearchParams();
   const { token } = useAuth();
-  const success = searchParams.get('success');
+  const sessionId = searchParams.get('session_id');
   const appointmentId = searchParams.get('appointmentId');
+  console.log({ sessionId, appointmentId });
   useEffect(() => {
-    if ((token, appointmentId, success)) {
-      verifyStripe({ appointmentId, success });
+    if (token && appointmentId && sessionId) {
+      verifyStripe({ appointmentId, sessionId });
     }
-  }, [token, appointmentId, success]);
+  }, [token, appointmentId, sessionId]);
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center">

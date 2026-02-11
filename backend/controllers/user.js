@@ -1,3 +1,4 @@
+const ENV = require('../configs/env');
 const catchAsyncHandler = require('../middleware/catchAsyncHandler');
 const AppError = require('../middleware/customError');
 const Appointment = require('../models/Appointment');
@@ -228,11 +229,15 @@ const paymentStripe = catchAsyncHandler(async (req, res, next) => {
 
   const appointment = await Appointment.findById(appointmentId);
 
+  if (appointment.userId.toString() !== req.user.id) {
+    return next(new AppError('Not authorized', 403));
+  }
+
   if (!appointment || appointment.cancelled) {
     return next(new AppError('Appointment Cancelled or not found', 400));
   }
 
-  const currency = process.env.CURRENCY.toLocaleLowerCase();
+  const currency = ENV.CURRENCY.toLowerCase();
 
   const line_items = [
     {
@@ -248,13 +253,17 @@ const paymentStripe = catchAsyncHandler(async (req, res, next) => {
   ];
 
   const session = await stripeInstance.checkout.sessions.create({
-    success_url: `${origin}/verify?success=true&appointmentId=${appointment._id}`,
+    success_url: `${origin}/verify?session_id={CHECKOUT_SESSION_ID}&appointmentId=${appointment._id}`,
     cancel_url: `${origin}/verify?success=false&appointmentId=${appointment._id}`,
     line_items: line_items,
     mode: 'payment',
   });
 
-  res.json({ success: true, session_url: session.url });
+  res.json({
+    success: true,
+    session_url: session.url,
+    message: 'Redirecting to payment gateway',
+  });
 });
 // @des Verify Stripe payment
 // @route POST /api/user/verify-stripe/:appointmentId
@@ -262,15 +271,22 @@ const paymentStripe = catchAsyncHandler(async (req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const verifyStripe = catchAsyncHandler(async (req, res, next) => {
   const { appointmentId } = req.params;
-  const { success } = req.body;
+  const { sessionId } = req.body;
+  // Check if sessionId is valid
+  if (!sessionId) {
+    return next(new AppError('Session ID is required', 400));
+  }
+  const appointment = await Appointment.findById(appointmentId);
+  if (!appointment || appointment.userId.toString() !== req.user.id) {
+    return next(new AppError('Appointment not found or unauthorized', 403));
+  }
+  const session = await stripeInstance.checkout.sessions.retrieve(sessionId);
+  if (session.payment_status !== 'paid') {
+    return res.json({ success: false, message: 'Payment not completed' });
+  }
 
-  if (success === 'false')
-    return res.json({ success: false, message: 'Payment Failed' });
-
-  await Appointment.findByIdAndUpdate(appointmentId, {
-    payment: true,
-  });
-
+  appointment.payment = true;
+  await appointment.save();
   return res.json({ success: true, message: 'Payment Successful' });
 });
 
