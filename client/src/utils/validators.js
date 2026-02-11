@@ -50,3 +50,34 @@ export const validateLogin = ({ email, password }) => {
 
   return errors;
 };
+export function validate(values) {
+  const errors = {};
+
+  if (!values.name.trim()) {
+    errors.name = 'Name is required';
+  }
+
+  if (!values.phone.trim()) {
+    errors.phone = 'Phone is required';
+  } else if (!/^\d{10,15}$/.test(values.phone)) {
+    errors.phone = 'Invalid phone number';
+  }
+
+  if (!values.address.line1.trim()) {
+    errors.line1 = 'Address line 1 is required';
+  }
+
+  if (!values.address.line2.trim()) {
+    errors.line2 = 'Address line 2 is required';
+  }
+
+  if (values.gender === 'Not Selected') {
+    errors.gender = 'Please select gender';
+  }
+
+  if (!values.dob) {
+    errors.dob = 'Date of birth is required';
+  }
+
+  return errors;
+}

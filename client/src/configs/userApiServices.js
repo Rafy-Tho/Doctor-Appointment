@@ -9,8 +9,8 @@ const userApiService = {
 
   getProfile: () => helperAxiosInstance.get('/user/profile'),
 
-  updateProfile: ({ formData }) =>
-    helperAxiosInstance.patch('/user/profile', formData),
+  updateProfile: (formData) =>
+    helperAxiosInstance.patch('/user/update-profile', formData),
 
   bookAppointment: ({ slotDate, slotTime, doctorId }) =>
     helperAxiosInstance.post(`/user/book-appointment/${doctorId}`, {

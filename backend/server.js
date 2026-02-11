@@ -8,6 +8,8 @@ const userRouter = require('./routes/userRoute');
 const connectCloudinary = require('./configs/cloudinary');
 const doctorRouter = require('./routes/doctorRoute');
 const adminRouter = require('./routes/adminRoute');
+const morgan = require('morgan');
+
 // configure environment variables
 
 const app = express();
@@ -22,7 +24,8 @@ app.use(
 connectDB();
 // configure cloudinary
 connectCloudinary();
-
+// Morgan middleware
+app.use(morgan('dev'));
 // route
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/doctor', doctorRouter);
