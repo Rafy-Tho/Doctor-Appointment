@@ -10,6 +10,7 @@ function UpdateProfile() {
   const { user } = useAuth();
   const { updateUserProfile, isPending } = useUpdateUserProfile();
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [state, dispatch] = useReducer(profileReducer, user, initialState);
   const { values, errors } = state || {};
   const onSubmitHandler = (e) => {
@@ -78,7 +79,13 @@ function UpdateProfile() {
           </div>
 
           <input
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={(e) => {
+              if (imagePreview) URL.revokeObjectURL(imagePreview);
+              const file = e.target.files[0];
+              setImage(file);
+              setImage(file);
+              setImagePreview(file ? URL.createObjectURL(file) : null);
+            }}
             type="file"
             hidden
             id="image"
@@ -154,9 +161,7 @@ function UpdateProfile() {
                 })
               }
             />
-            {errors?.address?.line1 && (
-              <ErrorMessage message={errors.address.line1} />
-            )}
+            {errors?.line1 && <ErrorMessage message={errors.line1} />}
 
             <input
               className="w-full px-3 py-2 rounded-md bg-gray-50 dark:bg-slate-800
@@ -172,9 +177,7 @@ function UpdateProfile() {
                 })
               }
             />
-            {errors?.address?.line2 && (
-              <ErrorMessage message={errors.address.line2} />
-            )}
+            {errors?.line2 && <ErrorMessage message={errors.line2} />}
           </div>
         </div>
       </section>

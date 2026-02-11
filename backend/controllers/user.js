@@ -90,7 +90,7 @@ const updateUserProfile = catchAsyncHandler(async (req, res, next) => {
   // Update user fields
   user.name = name || user.name;
   user.phone = phone || user.phone;
-  user.address = JSON.parse(address) || user.address;
+  user.address = address ? JSON.parse(address) : user.address;
   user.dob = dob || user.dob;
   user.gender = gender || user.gender;
   // Save updated user

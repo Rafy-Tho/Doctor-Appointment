@@ -7,7 +7,13 @@ const helperAxiosInstance = axios.create({
 
 helperAxiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+  if (token) {
+    try {
+      config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+    } catch {
+      localStorage.removeItem('token');
+    }
+  }
   return config;
 });
 
