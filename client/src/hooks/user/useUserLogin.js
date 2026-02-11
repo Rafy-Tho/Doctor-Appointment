@@ -15,6 +15,7 @@ function useUserLogin() {
     mutationFn: (userData) => userApiService.login(userData),
     mutationKey: ['user'],
     onSuccess: (data) => {
+      console.log({ data });
       showSuccess('User logged in successfully');
       login({ user: data?.user, token: data?.token });
       navigate('/');

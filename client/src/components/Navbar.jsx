@@ -47,7 +47,7 @@ function Navbar() {
               {user?.image ? (
                 <img className="w-8 rounded-full" src={user?.image} />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-pink-300-300 flex items-center justify-center">
                   {user?.name?.charAt(0).toUpperCase()}
                 </div>
               )}

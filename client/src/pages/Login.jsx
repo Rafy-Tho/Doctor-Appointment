@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useUserLogin from '../hooks/user/useUserLogin';
-
 import { validateLogin } from '../utils/validators';
 
 function Login() {
   const [email, setEmail] = useState('john.doe@example.com');
   const [password, setPassword] = useState('John@1234');
   const [errors, setErrors] = useState({});
-
   const { loginUser, isPending } = useUserLogin();
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     setErrors({});

@@ -20,12 +20,12 @@ export function AuthProvider({ children }) {
   };
 
   const updateProfile = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(userData.user));
     dispatch({ type: 'UPDATE_PROFILE', payload: userData });
   };
 
   const getProfile = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(userData.user));
     dispatch({ type: 'GET_PROFILE', payload: userData });
   };
 

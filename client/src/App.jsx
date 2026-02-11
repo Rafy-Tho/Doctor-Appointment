@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Signup from './pages/Signup';
 import useTheme from './hooks/useTheme';
+import UpdateProfile from './pages/UpdateProfile';
 function App() {
   const { theme } = useTheme();
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/my-appointment" element={<MyAppointment />} />
         <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/my-profile/edit" element={<UpdateProfile />} />
         <Route path="/appointment/:doctorId" element={<Appointment />} />
       </Routes>
       <Footer />
