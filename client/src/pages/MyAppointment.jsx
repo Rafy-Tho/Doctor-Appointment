@@ -26,7 +26,7 @@ function MyAppointment() {
     return <ErrorMessage message={appointmentError.message} />;
   return (
     <div>
-      <p className="pb-3 mt-12 text-lg font-medium text-gray-600 border-b">
+      <p className="pb-3 mt-12 text-lg font-medium  border-b">
         My appointments
       </p>
       <div className="">

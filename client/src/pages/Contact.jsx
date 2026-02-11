@@ -23,9 +23,7 @@ function Contact() {
           <p className=" ">
             Tel: (415) 555-0132 <br /> Email: greatstackdev@gmail.com
           </p>
-          <p className=" font-semibold text-lg text-gray-600">
-            CAREERS AT PRESCRIPTO
-          </p>
+          <p className=" font-semibold text-lg ">CAREERS AT PRESCRIPTO</p>
           <p className=" ">Learn more about our teams and job openings.</p>
           <button className="border  px-8 py-4 text-sm  transition-all duration-500">
             Explore Jobs
