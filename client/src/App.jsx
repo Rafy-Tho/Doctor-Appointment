@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Signup from './pages/Signup';
 import useTheme from './hooks/useTheme';
 import UpdateProfile from './pages/UpdateProfile';
+import Verify from './pages/Verify';
 function App() {
   const { theme } = useTheme();
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/my-profile/edit" element={<UpdateProfile />} />
         <Route path="/appointment/:doctorId" element={<Appointment />} />
+        <Route path="/verify" element={<Verify />} />
       </Routes>
       <Footer />
       <ToastContainer

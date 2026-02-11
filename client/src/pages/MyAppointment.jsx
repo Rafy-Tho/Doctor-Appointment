@@ -1,15 +1,18 @@
+import { useState } from 'react';
 import { assets } from '../assets/assets_frontend/assets';
 import ErrorMessage from '../components/ErrorMessage';
 import Loader from '../components/Loader';
 import useCancelAppointment from '../hooks/useCancelAppointment';
 import useGetUserAppointment from '../hooks/useGetUserAppointment';
+import usePaymentStripe from '../hooks/user/usePaymentStripe';
 import { months } from '../utils/constant';
 
 function MyAppointment() {
   const { appointments, isGettingAppointments, appointmentError } =
     useGetUserAppointment();
   const { cancelAppointment, isCancellingAppointment } = useCancelAppointment();
-
+  const { paymentStripe } = usePaymentStripe();
+  const [payment, setPayment] = useState('');
   // Function to format the date eg. ( 20_01_2000 => 20 Jan 2000 )
   const slotDateFormat = (slotDate) => {
     const dateArray = slotDate.split('_');
@@ -17,7 +20,7 @@ function MyAppointment() {
       dateArray[0] + ' ' + months[Number(dateArray[1])] + ' ' + dateArray[2]
     );
   };
-
+  console.log(appointments);
   if (isGettingAppointments) return <Loader />;
   if (appointmentError)
     return <ErrorMessage message={appointmentError.message} />;
@@ -27,53 +30,49 @@ function MyAppointment() {
         My appointments
       </p>
       <div className="">
-        {appointments.map((item, index) => (
+        {appointments?.map((appointment, index) => (
           <div
             key={index}
             className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b"
           >
             <div>
-              <img
-                className="w-36 bg-[#EAEFFF]"
-                src={item.docData.image}
-                alt=""
-              />
+              <img className="w-36 " src={appointment.doctorId.image} alt="" />
             </div>
-            <div className="flex-1 text-sm text-[#5E5E5E]">
-              <p className="text-[#262626] text-base font-semibold">
-                {item.docData.name}
+            <div className="flex-1 text-sm">
+              <p className="text-base font-semibold">
+                {appointment.doctorId.name}
               </p>
-              <p>{item.docData.speciality}</p>
-              <p className="text-[#464646] font-medium mt-1">Address:</p>
-              <p className="">{item.docData.address.line1}</p>
-              <p className="">{item.docData.address.line2}</p>
+              <p>{appointment.doctorId.speciality}</p>
+              <p className=" font-medium mt-1">Address:</p>
+              <p className="">{appointment.doctorId.address.line1}</p>
+              <p className="">{appointment.doctorId.address.line2}</p>
               <p className=" mt-1">
-                <span className="text-sm text-[#3C3C3C] font-medium">
-                  Date & Time:
-                </span>{' '}
-                {slotDateFormat(item.slotDate)} | {item.slotTime}
+                <span className="text-sm  font-medium">Date & Time:</span>{' '}
+                {slotDateFormat(appointment.slotDate)} | {appointment.slotTime}
               </p>
             </div>
             <div></div>
             <div className="flex flex-col gap-2 justify-end text-sm text-center">
-              {!item.cancelled &&
-                !item.payment &&
-                !item.isCompleted &&
-                payment !== item._id && (
+              {!appointment.cancelled &&
+                !appointment.payment &&
+                !appointment.isCompleted &&
+                payment !== appointment._id && (
                   <button
-                    onClick={() => setPayment(item._id)}
-                    className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300"
+                    onClick={() => setPayment(appointment._id)}
+                    className=" sm:min-w-48 py-2 border rounded  transition-all duration-300 text-blue-400 cursor-pointer "
                   >
                     Pay Online
                   </button>
                 )}
-              {!item.cancelled &&
-                !item.payment &&
-                !item.isCompleted &&
-                payment === item._id && (
+              {!appointment.cancelled &&
+                !appointment.payment &&
+                !appointment.isCompleted &&
+                payment === appointment._id && (
                   <button
-                    onClick={() => appointmentStripe(item._id)}
-                    className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
+                    onClick={() =>
+                      paymentStripe({ appointmentId: appointment._id })
+                    }
+                    className=" sm:min-w-48 py-2 border rounded transition-all duration-300 flex items-center justify-center"
                   >
                     <img
                       className="max-w-20 max-h-5"
@@ -83,28 +82,34 @@ function MyAppointment() {
                   </button>
                 )}
 
-              {!item.cancelled && item.payment && !item.isCompleted && (
-                <button className="sm:min-w-48 py-2 border rounded text-[#696969]  bg-[#EAEFFF]">
-                  Paid
-                </button>
-              )}
+              {!appointment.cancelled &&
+                appointment.payment &&
+                !appointment.isCompleted && (
+                  <button className="sm:min-w-48 py-2 border rounded text-green-400">
+                    Paid
+                  </button>
+                )}
 
-              {item.isCompleted && (
+              {appointment.isCompleted && (
                 <button className="sm:min-w-48 py-2 border border-green-500 rounded text-green-500">
                   Completed
                 </button>
               )}
 
-              {!item.cancelled && !item.isCompleted && (
+              {!appointment.cancelled && !appointment.isCompleted && (
                 <button
-                  onClick={() => cancelAppointment({ appointmentId: item._id })}
-                  className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300"
+                  onClick={() =>
+                    cancelAppointment({ appointmentId: appointment._id })
+                  }
+                  className=" sm:min-w-48 py-2 border rounded  transition-all duration-300 text-red-400 cursor-pointer "
                 >
-                  Cancel appointment
+                  {isCancellingAppointment
+                    ? 'Cancelling...'
+                    : 'Cancel appointment'}
                 </button>
               )}
-              {item.cancelled && !item.isCompleted && (
-                <button className="sm:min-w-48 py-2 border border-red-500 rounded text-red-500">
+              {appointment.cancelled && !appointment.isCompleted && (
+                <button className="sm:min-w-48 py-2 border  text-red-400">
                   Appointment cancelled
                 </button>
               )}

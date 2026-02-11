@@ -13,7 +13,7 @@ function useUserLogin() {
     error,
   } = useMutation({
     mutationFn: (userData) => userApiService.login(userData),
-    mutationKey: ['user'],
+    mutationKey: ['user-login'],
     onSuccess: (data) => {
       console.log({ data });
       showSuccess('User logged in successfully');
