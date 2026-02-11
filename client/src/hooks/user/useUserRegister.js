@@ -9,7 +9,7 @@ function useUserRegister() {
   const { register } = useAuth();
   const { mutate: registerUser, isPending } = useMutation({
     mutationFn: (userData) => userApiService.register(userData),
-    mutationKey: ['user'],
+    mutationKey: ['user-register'],
     onSuccess: (data) => {
       showSuccess('User registered successfully');
       register({ user: data?.user, token: data?.token });

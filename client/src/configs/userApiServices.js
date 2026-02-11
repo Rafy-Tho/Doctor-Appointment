@@ -18,11 +18,20 @@ const userApiService = {
     }),
 
   cancelAppointment: ({ appointmentId }) =>
-    helperAxiosInstance.patch(`/user/cancel-appointment/${appointmentId}`),
+    helperAxiosInstance.patch(`/user/appointments/${appointmentId}/cancel`),
 
   listAppointments: () => helperAxiosInstance.get('/user/appointments'),
-  getSlotDate: (doctorId) =>
+
+  getSlotDate: ({ doctorId }) =>
     helperAxiosInstance.get(`/user/appointments/${doctorId}`),
+
+  paymentStripe: ({ appointmentId }) =>
+    helperAxiosInstance.post(`/user/payment-stripe/${appointmentId}`),
+
+  verifyStripe: ({ appointmentId, success }) =>
+    helperAxiosInstance.post(`/user/verify-stripe/${appointmentId}`, {
+      success,
+    }),
 };
 
 export default userApiService;

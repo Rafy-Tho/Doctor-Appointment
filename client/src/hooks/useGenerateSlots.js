@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from 'react';
 
 export default function useGenerateSlots({ appointments, doctorId }) {
   const [docSlots, setDocSlots] = useState([]);
-
+  console.log({ appointments });
   // Create booked timestamp set (memoized for performance)
   const bookedSet = useMemo(() => {
     if (!appointments) return new Set();

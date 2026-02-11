@@ -13,9 +13,10 @@ import { showWarning } from '../utils/toast';
 function Appointment() {
   const { doctorId } = useParams();
   const { data, isPending, error } = useGetDoctors();
-  const { appointments } = useGetSlotDate(doctorId);
+  const { appointments, isSlotPending, slotError } = useGetSlotDate({
+    doctorId,
+  });
   const { bookAppointment, isBooking } = useBookAppointment();
-
   const [slotIndex, setSlotIndex] = useState(0);
   const [selectedSlot, setSelectedSlot] = useState(null);
 
@@ -35,8 +36,9 @@ function Appointment() {
     });
   };
 
-  if (isPending) return <Loader />;
-  if (error) return <ErrorMessage message={error.message} />;
+  if (isPending || isSlotPending) return <Loader />;
+  if (error || slotError)
+    return <ErrorMessage message={error.message || slotError.message} />;
 
   return (
     <div>

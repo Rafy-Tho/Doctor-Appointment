@@ -5,7 +5,7 @@ import { showError } from '../utils/toast';
 
 function useGetUserAppointment() {
   const {
-    data: { appointments = [] } = {},
+    data: { appointments } = {},
     isPending: isGettingAppointments,
     error: appointmentError,
   } = useQuery({

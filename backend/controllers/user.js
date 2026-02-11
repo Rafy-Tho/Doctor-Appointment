@@ -5,7 +5,8 @@ const Doctor = require('../models/Doctor');
 const User = require('../models/User');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
-
+const stripe = require('stripe');
+const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
 // @des Register a new user
 // @route POST /api/user/register
 // @access Public
@@ -200,8 +201,9 @@ const getAppointmentWithSpecificDoctor = catchAsyncHandler(
     // Check if appointment exists
     const appointments = await Appointment.find(
       {
-        _id: doctorId,
+        doctorId,
         slotDate: { $gte: now },
+        cancelled: false,
       },
       { slotDate: 1, _id: 0 },
     );
@@ -217,7 +219,64 @@ const getAppointmentWithSpecificDoctor = catchAsyncHandler(
     });
   },
 );
+// @des Generate Stripe payment session
+// @route POST /api/user/payment-stripe/:appointmentId
+// @access Private
+const paymentStripe = catchAsyncHandler(async (req, res, next) => {
+  const { appointmentId } = req.params;
+  const { origin } = req.headers;
+
+  const appointment = await Appointment.findById(appointmentId);
+
+  if (!appointment || appointment.cancelled) {
+    return next(new AppError('Appointment Cancelled or not found', 400));
+  }
+
+  const currency = process.env.CURRENCY.toLocaleLowerCase();
+
+  const line_items = [
+    {
+      price_data: {
+        currency,
+        product_data: {
+          name: 'Appointment Fees',
+        },
+        unit_amount: appointment.amount * 100,
+      },
+      quantity: 1,
+    },
+  ];
+
+  const session = await stripeInstance.checkout.sessions.create({
+    success_url: `${origin}/verify?success=true&appointmentId=${appointment._id}`,
+    cancel_url: `${origin}/verify?success=false&appointmentId=${appointment._id}`,
+    line_items: line_items,
+    mode: 'payment',
+  });
+
+  res.json({ success: true, session_url: session.url });
+});
+// @des Verify Stripe payment
+// @route POST /api/user/verify-stripe/:appointmentId
+// @access Private
+// eslint-disable-next-line no-unused-vars
+const verifyStripe = catchAsyncHandler(async (req, res, next) => {
+  const { appointmentId } = req.params;
+  const { success } = req.body;
+
+  if (success === 'false')
+    return res.json({ success: false, message: 'Payment Failed' });
+
+  await Appointment.findByIdAndUpdate(appointmentId, {
+    payment: true,
+  });
+
+  return res.json({ success: true, message: 'Payment Successful' });
+});
+
 module.exports = {
+  paymentStripe,
+  verifyStripe,
   getAppointmentWithSpecificDoctor,
   registerUser,
   loginUser,

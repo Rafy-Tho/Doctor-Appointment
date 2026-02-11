@@ -8,6 +8,8 @@ const {
   updateUserProfile,
   getUserProfile,
   getAppointmentWithSpecificDoctor,
+  paymentStripe,
+  verifyStripe,
 } = require('../controllers/user');
 const { authorizeUser, authenticateUser } = require('../middleware/authUser');
 const upload = require('../middleware/multer');
@@ -42,5 +44,20 @@ userRouter.get(
   authorizeUser(),
   listAppointments,
 );
+
+// Stripe payment
+userRouter.post(
+  '/payment-stripe/:appointmentId',
+  authenticateUser,
+  authorizeUser(),
+  paymentStripe,
+);
+userRouter.post(
+  '/verify-stripe/:appointmentId',
+  authenticateUser,
+  authorizeUser(),
+  verifyStripe,
+);
+
 userRouter.get('/appointments/:doctorId', getAppointmentWithSpecificDoctor);
 module.exports = userRouter;

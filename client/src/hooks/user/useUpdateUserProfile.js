@@ -11,7 +11,7 @@ function useUpdateUserProfile() {
   const navigate = useNavigate();
   const { mutate: updateUserProfile, isPending } = useMutation({
     mutationFn: (formData) => userApiService.updateProfile(formData),
-    mutationKey: ['user'],
+    mutationKey: ['user-update'],
     onSuccess: (data) => {
       console.log({ data });
       showSuccess('User profile updated successfully');
