@@ -28,9 +28,9 @@ const userApiService = {
   paymentStripe: ({ appointmentId }) =>
     helperAxiosInstance.post(`/user/payment-stripe/${appointmentId}`),
 
-  verifyStripe: ({ appointmentId, success }) =>
+  verifyStripe: ({ appointmentId, sessionId }) =>
     helperAxiosInstance.post(`/user/verify-stripe/${appointmentId}`, {
-      success,
+      sessionId,
     }),
 };
 
