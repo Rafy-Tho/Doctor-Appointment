@@ -107,9 +107,9 @@ const updateUserProfile = catchAsyncHandler(async (req, res, next) => {
 // @access Private
 const bookAppointment = catchAsyncHandler(async (req, res, next) => {
   const { doctorId } = req.params;
-  const { slotDate, slotTime } = req.body;
+  const { slotDate } = req.body;
   // Check if doctorId is valid
-  if (!doctorId || !slotDate || !slotTime) {
+  if (!doctorId || !slotDate) {
     return next(new AppError('All fields are required', 400));
   }
   // Check if doctor exists
@@ -125,7 +125,6 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
   const appointmentExists = await Appointment.findOne({
     doctorId,
     slotDate,
-    slotTime,
   });
   if (appointmentExists) {
     return next(new AppError('Slot already booked', 400));
@@ -135,7 +134,6 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
     userId: req.user.id,
     doctorId,
     slotDate,
-    slotTime,
     amount: doctor.fees,
   });
   await appointment.save();
@@ -181,14 +179,46 @@ const cancelAppointment = catchAsyncHandler(async (req, res, next) => {
 // @access Private
 // eslint-disable-next-line no-unused-vars
 const listAppointments = catchAsyncHandler(async (req, res, next) => {
-  const appointments = await Appointment.find({ userId: req.user.id });
+  const appointments = await Appointment.find({ userId: req.user.id }).populate(
+    'doctorId',
+  );
   res.status(200).json({
     success: true,
     appointments,
     message: 'Appointments retrieved successfully',
   });
 });
+const getAppointmentWithSpecificDoctor = catchAsyncHandler(
+  async (req, res, next) => {
+    const { doctorId } = req.params;
+    // Check if doctorId is valid
+    if (!doctorId) {
+      return next(new AppError('Doctor ID is required', 400));
+    }
+    const now = new Date();
+
+    // Check if appointment exists
+    const appointments = await Appointment.find(
+      {
+        _id: doctorId,
+        slotDate: { $gte: now },
+      },
+      { slotDate: 1, _id: 0 },
+    );
+
+    if (!appointments) {
+      return next(new AppError('Appointment not found', 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      appointments,
+      message: 'Appointment retrieved successfully',
+    });
+  },
+);
 module.exports = {
+  getAppointmentWithSpecificDoctor,
   registerUser,
   loginUser,
   updateUserProfile,

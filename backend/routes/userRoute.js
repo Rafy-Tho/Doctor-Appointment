@@ -7,6 +7,7 @@ const {
   listAppointments,
   updateUserProfile,
   getUserProfile,
+  getAppointmentWithSpecificDoctor,
 } = require('../controllers/user');
 const { authorizeUser, authenticateUser } = require('../middleware/authUser');
 const upload = require('../middleware/multer');
@@ -41,4 +42,5 @@ userRouter.get(
   authorizeUser(),
   listAppointments,
 );
+userRouter.get('/appointments/:doctorId', getAppointmentWithSpecificDoctor);
 module.exports = userRouter;
