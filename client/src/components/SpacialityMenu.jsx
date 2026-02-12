@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { specialityData } from '../assets/assets_frontend/assets';
+import { specialityData } from '../assets/assets';
 
 function SpacialityMenu() {
   return (

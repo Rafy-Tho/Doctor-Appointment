@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { assets } from '../assets/assets_frontend/assets';
+import { assets } from '../assets/assets';
 import useGetDoctors from '../hooks/doctors/useGetDoctors';
 import useGetSlotDate from '../hooks/user/useGetSlotDate';
 import useGenerateSlots from '../hooks/useGenerateSlots';

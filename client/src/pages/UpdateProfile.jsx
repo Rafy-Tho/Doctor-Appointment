@@ -1,5 +1,5 @@
 import { useReducer, useState } from 'react';
-import { assets } from '../assets/assets_frontend/assets';
+import { assets } from '../assets/assets';
 import useAuth from '../hooks/useAuth';
 import useUpdateUserProfile from '../hooks/user/useUpdateUserProfile';
 import { initialState, profileReducer } from '../reducer/profileReducer';

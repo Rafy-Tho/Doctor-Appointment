@@ -1,4 +1,4 @@
-import { assets } from '../assets/assets_frontend/assets.js';
+import { assets } from '../assets/assets.js';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import useAuth from '../hooks/useAuth.js';

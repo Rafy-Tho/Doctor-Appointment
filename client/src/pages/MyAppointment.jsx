@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { assets } from '../assets/assets_frontend/assets';
+import { assets } from '../assets/assets';
 import ErrorMessage from '../components/ErrorMessage';
 import Loader from '../components/Loader';
 import useCancelAppointment from '../hooks/useCancelAppointment';
