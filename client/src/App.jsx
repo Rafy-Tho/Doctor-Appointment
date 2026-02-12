@@ -16,6 +16,7 @@ import Signup from './pages/Signup';
 import useTheme from './hooks/useTheme';
 import UpdateProfile from './pages/UpdateProfile';
 import Verify from './pages/Verify';
+import ProtectRoute from './components/ProtectRoute';
 function App() {
   const { theme } = useTheme();
   return (
@@ -30,10 +31,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
         <Route path="/about" element={<About />} />
-        <Route path="/my-appointment" element={<MyAppointment />} />
-        <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/my-profile/edit" element={<UpdateProfile />} />
-        <Route path="/appointment/:doctorId" element={<Appointment />} />
+        <Route element={<ProtectRoute />}>
+          <Route path="/my-appointment" element={<MyAppointment />} />
+          <Route path="/my-profile" element={<MyProfile />} />
+          <Route path="/my-profile/edit" element={<UpdateProfile />} />
+          <Route path="/appointment/:doctorId" element={<Appointment />} />
+        </Route>
         <Route path="/verify" element={<Verify />} />
       </Routes>
       <Footer />
