@@ -1,3 +1,5 @@
+import { doctorFormValidate } from './validators';
+
 // Function to format the date eg. ( 20_01_2000 => 20 Jan 2000 )
 export const slotDateFormat = (slotDate) => {
   const date = new Date(slotDate);
@@ -14,4 +16,19 @@ export const calculateAge = (dob) => {
   const birthDate = new Date(dob);
   let age = today.getFullYear() - birthDate.getFullYear();
   return age;
+};
+
+export const validateAll = (values) => {
+  const errors = {};
+
+  Object.keys(values).forEach((key) => {
+    const error = doctorFormValidate(key, values[key]);
+    if (error) errors[key] = error;
+  });
+
+  if (!values.image) {
+    errors.image = 'Image is required';
+  }
+
+  return errors;
 };

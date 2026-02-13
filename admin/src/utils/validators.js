@@ -1,33 +1,3 @@
-export const validateSignup = ({ name, email, password }) => {
-  const errors = {};
-
-  // Name
-  if (!name.trim()) {
-    errors.name = 'Full name is required';
-  } else if (name.trim().length < 3) {
-    errors.name = 'Name must be at least 3 characters';
-  }
-
-  // Email
-  if (!email.trim()) {
-    errors.email = 'Email is required';
-  } else {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      errors.email = 'Invalid email address';
-    }
-  }
-
-  // Password
-  if (!password) {
-    errors.password = 'Password is required';
-  } else if (password.length < 6) {
-    errors.password = 'Password must be at least 6 characters';
-  }
-
-  return errors;
-};
-
 export const validateLogin = ({ email, password }) => {
   const errors = {};
 
@@ -44,41 +14,76 @@ export const validateLogin = ({ email, password }) => {
   // Password
   if (!password) {
     errors.password = 'Password is required';
-  } else if (password.length < 6) {
-    errors.password = 'Password must be at least 6 characters';
-  }
+  } else if (password.length < 8) {
+    errors.password = 'Password must be at least 8 characters';
+  } else if (
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)
+  )
+    errors.password = 'Password must be strong';
 
   return errors;
 };
-export function validate(values) {
-  const errors = {};
-  const address = values.address || {};
+export const doctorFormValidate = (name, value) => {
+  let error = '';
 
-  if (!values.name.trim()) {
-    errors.name = 'Name is required';
+  switch (name) {
+    case 'name':
+      if (!value.trim()) error = 'Name is required';
+      else if (value.length < 3) error = 'Name must be at least 3 characters';
+      else if (value.length > 20) error = 'Name must be at most 20 characters';
+      break;
+
+    case 'email':
+      if (!value) error = 'Email is required';
+      else if (!/^\S+@\S+\.\S+$/.test(value)) error = 'Invalid email format';
+      break;
+
+    case 'password':
+      if (!value) error = 'Password is required';
+      else if (value.length < 8)
+        error = 'Password must be at least 8 characters';
+      else if (
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(value)
+      )
+        error = 'Password must be strong';
+      break;
+
+    case 'fees':
+      if (!value) error = 'Fees is required';
+      else if (value <= 0) error = 'Fees must be greater than 0';
+      break;
+
+    case 'degree':
+      if (!value.trim()) error = 'Degree is required';
+      break;
+
+    case 'address1':
+      if (!value.trim()) error = 'Address is required';
+      break;
+
+    case 'address2':
+      if (!value.trim()) error = 'Address is required';
+      break;
+
+    case 'about':
+      if (!value.trim()) error = 'About is required';
+      else if (value.length < 10)
+        error = 'About must be at least 10 characters';
+      else if (value.length > 200)
+        error = 'About must be at most 200 characters';
+      break;
+
+    case 'specialization':
+      if (!value.trim()) error = 'Specialization is required';
+      break;
+
+    case 'image':
+      if (value === null) error = 'Image is required';
+      break;
+
+    default:
+      break;
   }
 
-  if (!values.phone.trim()) {
-    errors.phone = 'Phone is required';
-  } else if (!/^\d{10,15}$/.test(values.phone)) {
-    errors.phone = 'Invalid phone number';
-  }
-
-  if (!address.line1.trim()) {
-    errors.line1 = 'Address line 1 is required';
-  }
-
-  if (!address.line2.trim()) {
-    errors.line2 = 'Address line 2 is required';
-  }
-
-  if (values.gender === 'Not Selected') {
-    errors.gender = 'Please select gender';
-  }
-
-  if (!values.dob) {
-    errors.dob = 'Date of birth is required';
-  }
-
-  return errors;
-}
+  return error;
+};
