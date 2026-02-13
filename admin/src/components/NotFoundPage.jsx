@@ -1,6 +1,8 @@
+import { Link, useNavigate } from 'react-router-dom';
 const NotFoundPage = () => {
+  const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4 fixed top-0 left-0 right-0 bottom-0">
       <div className="max-w-lg w-full text-center">
         {/* Animated 404 Number */}
         <div className="mb-8">
@@ -26,17 +28,17 @@ const NotFoundPage = () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
-            onClick={() => window.history.back()}
+            onClick={() => navigate(-1)}
             className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg"
           >
             Go Back
           </button>
-          <button
-            onClick={() => (window.location.href = '/')}
+          <Link
+            to={'/'}
             className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300"
           >
             Home Page
-          </button>
+          </Link>
         </div>
 
         {/* Decorative Elements */}

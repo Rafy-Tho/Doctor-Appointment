@@ -1,10 +1,10 @@
 import { useReducer, useState } from 'react';
 import { assets } from '../assets/assets';
+import ErrorMessage from '../components/ErrorMessage';
 import useAuth from '../hooks/useAuth';
 import useUpdateUserProfile from '../hooks/user/useUpdateUserProfile';
 import { initialState, profileReducer } from '../reducer/profileReducer';
-import { validate } from '../utils/validators';
-import ErrorMessage from '../components/ErrorMessage';
+import { validateUpdateProfile } from '../utils/validators';
 
 function UpdateProfile() {
   const { user } = useAuth();
@@ -16,7 +16,7 @@ function UpdateProfile() {
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    const validationErrors = validate(values);
+    const validationErrors = validateUpdateProfile(values);
     if (Object.keys(validationErrors).length > 0) {
       dispatch({ type: 'SET_ERRORS', payload: validationErrors });
       return;
