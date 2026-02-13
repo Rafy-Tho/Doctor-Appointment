@@ -54,8 +54,14 @@ function AddDoctor() {
         line2: state.values.address2,
       }),
     );
-    addDoctor({ formData });
-    dispatch({ type: 'RESET' });
+    addDoctor(
+      { formData },
+      {
+        onSuccess: () => {
+          dispatch({ type: 'RESET_FORM' });
+        },
+      },
+    );
   };
 
   return (
