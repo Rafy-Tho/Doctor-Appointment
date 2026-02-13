@@ -13,12 +13,6 @@ export function AuthProvider({ children }) {
     dispatch({ type: 'LOGIN', payload: userData });
   };
 
-  const register = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData.user));
-    localStorage.setItem('token', JSON.stringify(userData.token));
-    dispatch({ type: 'REGISTER', payload: userData });
-  };
-
   const updateProfile = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData.user));
     dispatch({ type: 'UPDATE_PROFILE', payload: userData });
@@ -43,7 +37,6 @@ export function AuthProvider({ children }) {
         token: state.token,
         login,
         logout,
-        register,
         updateProfile,
         getProfile,
       }}

@@ -8,15 +8,16 @@ function useAdminGetAppointment() {
     data: { appointments } = {},
     isPending,
     error,
+    isError,
   } = useQuery({
     queryKey: ['admin-appointments'],
     queryFn: adminApiService.getAppointments,
   });
   useEffect(() => {
-    if (error) {
+    if (isError) {
       showError(error.message);
     }
-  }, [error]);
+  }, [isError, error]);
   return {
     appointments,
     isPending,

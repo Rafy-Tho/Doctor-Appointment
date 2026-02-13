@@ -11,7 +11,6 @@ function useDoctorLogin() {
     mutationFn: (doctorData) => doctorApiService.login(doctorData),
     mutationKey: ['doctor-login'],
     onSuccess: (data) => {
-      console.log({ data });
       showSuccess('Doctor logged in successfully');
       login({ user: data?.user, token: data?.token });
       navigate('/');

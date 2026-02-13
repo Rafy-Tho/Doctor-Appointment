@@ -8,15 +8,16 @@ function useGetDoctorList() {
     data: { doctors } = {},
     isPending,
     error,
+    isError,
   } = useQuery({
     queryKey: ['doctor-list'],
     queryFn: adminApiService.getAllDoctors,
   });
   useEffect(() => {
-    if (error) {
+    if (isError) {
       showError(error.message);
     }
-  }, [error]);
+  }, [isError, error]);
   return { doctors, isPending, error };
 }
 

@@ -8,15 +8,16 @@ function useGetAdminDashboard() {
     data: dashboardStats,
     isPending,
     error,
+    isError,
   } = useQuery({
     queryKey: ['admin-dashboard'],
     queryFn: adminApiService.getDashboard,
   });
   useEffect(() => {
-    if (error) {
+    if (isError) {
       showError(error.message);
     }
-  }, [error]);
+  }, [isError, error]);
   return {
     dashboardStats,
     isPending,

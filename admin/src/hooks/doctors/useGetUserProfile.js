@@ -16,11 +16,6 @@ function useGetUserProfile() {
   });
 
   useEffect(() => {
-    if (userData?.user) {
-      getProfile({ user: userData.user });
-    }
-  }, [userData]);
-  useEffect(() => {
     if (error) {
       showError(error.message);
     }
