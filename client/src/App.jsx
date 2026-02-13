@@ -14,6 +14,7 @@ import UpdateProfile from './pages/UpdateProfile';
 import Verify from './pages/Verify';
 import AppLayout from './components/AppLayout';
 import IsAuthenticate from './components/IsAuthenticate';
+import NotFoundPage from './components/NotFoundPage';
 function App() {
   return (
     <Routes>
@@ -34,6 +35,7 @@ function App() {
           <Route path="/appointment/:doctorId" element={<Appointment />} />
           <Route path="/verify" element={<Verify />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

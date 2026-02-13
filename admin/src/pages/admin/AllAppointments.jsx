@@ -1,13 +1,13 @@
 import ErrorMessage from '../../components/ErrorMessage';
 import Loader from '../../components/Loader';
-import useAdminCancelAppointment from '../../hooks/admin/useAdminCanceAppointment';
+import useAdminCancelAppointment from '../../hooks/admin/useAdminCancelAppointment';
 import useAdminGetAppointment from '../../hooks/admin/useAdminGetAppointment';
 import { currencySymbol } from '../../utils/constant';
 import { calculateAge, slotDateFormat } from '../../utils/helper';
 const currency = currencySymbol;
 function AllAppointments() {
   const { appointments, isPending, error } = useAdminGetAppointment();
-  const { adminCancelAppointment, isCancellingAppointment } =
+  const { adminCancelAppointment, isCancellingAppointment, variables } =
     useAdminCancelAppointment();
   if (isPending) {
     return <Loader />;
@@ -72,7 +72,10 @@ function AllAppointments() {
                 }
                 className="px-4 py-1 bg-red-400 text-white text-xs font-medium rounded hover:bg-red-600 transition-all cursor-pointer"
               >
-                {isCancellingAppointment ? 'Cancelling' : 'Cancel'}
+                {isCancellingAppointment &&
+                variables?.appointmentId === appointment._id
+                  ? 'Cancelling'
+                  : 'Cancel'}
               </button>
             )}
           </div>
