@@ -88,14 +88,15 @@ export function validateUpdateProfile(values) {
   } else {
     const today = new Date();
     const birthDate = new Date(values.dob);
-
     let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
 
     if (age < 15) {
       errors.dob = 'You must be at least 15 years old';
     } else if (age > 100) {
-      errors.dob = 'Invalid date of birth';
-    } else {
       errors.dob = 'Invalid date of birth';
     }
   }
