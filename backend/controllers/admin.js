@@ -62,7 +62,7 @@ const adminAppointmentsDoctor = catchAsyncHandler(async (req, res, next) => {
   if (!admin) {
     return next(new AppError('Not authorized to view appointments', 404));
   }
-  const appointments = await Appointment.find({});
+  const appointments = await Appointment.find({}).populate('doctorId userId');
   res.status(200).json({
     success: true,
     appointments,
@@ -195,13 +195,14 @@ const adminAllDoctors = catchAsyncHandler(async (req, res, next) => {
 // @access Private
 const adminDashboard = catchAsyncHandler(async (req, res, next) => {
   const admin = await Admin.findById(req.admin.id);
+
   if (!admin) {
     return next(new AppError('Not authorized to view dashboard stats', 404));
   }
 
   const totalDoctors = await Doctor.countDocuments();
   const totalAppointments = await Appointment.countDocuments();
-  const totalUsers = await User.countDocuments();
+  const totalPatients = await User.countDocuments();
   const latestAppointments = await Appointment.find({})
     .sort({ createdAt: -1 })
     .limit(5)
@@ -210,7 +211,7 @@ const adminDashboard = catchAsyncHandler(async (req, res, next) => {
     success: true,
     totalDoctors,
     totalAppointments,
-    totalUsers,
+    totalPatients,
     latestAppointments,
     message: 'Dashboard stats retrieved successfully',
   });

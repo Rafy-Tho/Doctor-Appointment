@@ -3,14 +3,14 @@ import adminApiService from '../../configs/adminApiServices';
 import { useEffect } from 'react';
 import { showError } from '../../utils/toast';
 
-function useGetAdminDashboard() {
+function useAdminGetAppointment() {
   const {
-    data: dashboardStats,
+    data: { appointments } = {},
     isPending,
     error,
   } = useQuery({
-    queryKey: ['admin-dashboard'],
-    queryFn: adminApiService.getDashboard,
+    queryKey: ['admin-appointments'],
+    queryFn: adminApiService.getAppointments,
   });
   useEffect(() => {
     if (error) {
@@ -18,10 +18,10 @@ function useGetAdminDashboard() {
     }
   }, [error]);
   return {
-    dashboardStats,
+    appointments,
     isPending,
     error,
   };
 }
 
-export default useGetAdminDashboard;
+export default useAdminGetAppointment;

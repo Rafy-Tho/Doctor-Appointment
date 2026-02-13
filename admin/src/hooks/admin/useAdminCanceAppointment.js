@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import adminApiService from '../../configs/adminApiServices';
-import { showError, showSuccess } from '../utils/toast';
+import { showError, showSuccess } from '../../utils/toast';
 
 function useAdminCancelAppointment() {
   const queryClient = useQueryClient();
@@ -12,6 +12,7 @@ function useAdminCancelAppointment() {
       onSuccess: () => {
         showSuccess('Appointment cancelled successfully');
         queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
+        queryClient.invalidateQueries({ queryKey: ['admin-appointments'] });
       },
       onError: (error) => {
         showError(error.message);

@@ -6,6 +6,8 @@ export const validateSignup = ({ name, email, password }) => {
     errors.name = 'Full name is required';
   } else if (name.trim().length < 3) {
     errors.name = 'Name must be at least 3 characters';
+  } else if (name.trim().length > 20) {
+    errors.name = 'Name must be at most 20 characters';
   }
 
   // Email
@@ -21,8 +23,8 @@ export const validateSignup = ({ name, email, password }) => {
   // Password
   if (!password) {
     errors.password = 'Password is required';
-  } else if (password.length < 6) {
-    errors.password = 'Password must be at least 6 characters';
+  } else if (password.length < 8) {
+    errors.password = 'Password must be at least 8 characters';
   }
 
   return errors;
@@ -44,18 +46,23 @@ export const validateLogin = ({ email, password }) => {
   // Password
   if (!password) {
     errors.password = 'Password is required';
-  } else if (password.length < 6) {
-    errors.password = 'Password must be at least 6 characters';
+  } else if (password.length < 8) {
+    errors.password = 'Password must be at least 8 characters';
   }
 
   return errors;
 };
-export function validate(values) {
+
+export function validateUpdateProfile(values) {
   const errors = {};
   const address = values.address || {};
 
   if (!values.name.trim()) {
     errors.name = 'Name is required';
+  } else if (values.name.trim().length < 3) {
+    errors.name = 'Name must be at least 3 characters';
+  } else if (values.name.trim().length > 20) {
+    errors.name = 'Name must be at most 20 characters';
   }
 
   if (!values.phone.trim()) {
@@ -78,6 +85,19 @@ export function validate(values) {
 
   if (!values.dob) {
     errors.dob = 'Date of birth is required';
+  } else {
+    const today = new Date();
+    const birthDate = new Date(values.dob);
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+
+    if (age < 15) {
+      errors.dob = 'You must be at least 15 years old';
+    } else if (age > 100) {
+      errors.dob = 'Invalid date of birth';
+    } else {
+      errors.dob = 'Invalid date of birth';
+    }
   }
 
   return errors;
