@@ -8,15 +8,16 @@ function useGetUserAppointment() {
     data: { appointments } = {},
     isPending: isGettingAppointments,
     error: appointmentError,
+    isError,
   } = useQuery({
     queryKey: ['user-appointments'],
     queryFn: userApiService.listAppointments,
   });
   useEffect(() => {
-    if (appointmentError) {
+    if (isError) {
       showError(appointmentError.message);
     }
-  }, [appointmentError]);
+  }, [isError, appointmentError]);
   return { appointments, isGettingAppointments, appointmentError };
 }
 

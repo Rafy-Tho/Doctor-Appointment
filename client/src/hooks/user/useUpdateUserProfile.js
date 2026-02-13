@@ -16,13 +16,11 @@ function useUpdateUserProfile() {
       console.log({ data });
       showSuccess('User profile updated successfully');
       updateProfile({ user: data?.user });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
       navigate('/my-profile');
     },
     onError: (error) => {
       showError(error.message);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
 

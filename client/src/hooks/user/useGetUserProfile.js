@@ -10,6 +10,7 @@ function useGetUserProfile() {
     data: userData,
     isPending,
     error,
+    isError,
   } = useQuery({
     queryFn: () => userApiService.getProfile(),
     queryKey: ['user'],
@@ -19,12 +20,14 @@ function useGetUserProfile() {
     if (userData?.user) {
       getProfile({ user: userData.user });
     }
-  }, [userData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData?.user]);
+
   useEffect(() => {
-    if (error) {
+    if (isError) {
       showError(error.message);
     }
-  }, [error]);
+  }, [isError, error]);
   return {
     userData,
     isPending,

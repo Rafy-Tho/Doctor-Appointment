@@ -8,15 +8,16 @@ function useGetSlotDate({ doctorId }) {
     data: { appointments } = {},
     isPending: isSlotPending,
     error: slotError,
+    isError,
   } = useQuery({
     queryKey: ['slotDate', doctorId],
     queryFn: () => userApiService.getSlotDate({ doctorId }),
   });
   useEffect(() => {
-    if (slotError) {
+    if (isError) {
       showError(slotError.message);
     }
-  }, [slotError]);
+  }, [isError, slotError]);
   return { appointments, isSlotPending, slotError };
 }
 
