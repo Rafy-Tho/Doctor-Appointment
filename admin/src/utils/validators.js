@@ -73,8 +73,8 @@ export const doctorFormValidate = (name, value) => {
         error = 'About must be at most 200 characters';
       break;
 
-    case 'specialization':
-      if (!value.trim()) error = 'Specialization is required';
+    case 'speciality':
+      if (!value.trim()) error = 'Speciality is required';
       break;
 
     case 'image':
