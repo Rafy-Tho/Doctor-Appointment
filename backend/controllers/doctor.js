@@ -28,6 +28,7 @@ const doctorLogin = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     token,
+    user: doctor,
     message: 'Doctor logged in successfully',
   });
 });

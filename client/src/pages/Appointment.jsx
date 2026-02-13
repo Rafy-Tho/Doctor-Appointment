@@ -9,7 +9,7 @@ import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 import { currencySymbol, daysOfWeek } from '../utils/constant';
 import { showWarning } from '../utils/toast';
-
+const today = new Date();
 function Appointment() {
   const { doctorId } = useParams();
   const { data, isPending, error } = useGetDoctors();
@@ -24,7 +24,7 @@ function Appointment() {
 
   // Generate slots for next 7 days
   const { docSlots } = useGenerateSlots({ appointments, doctorId });
-
+  console.log({ docSlots });
   const onBookAppointment = () => {
     if (!selectedSlot) {
       showWarning('Please select a time slot');
@@ -102,8 +102,20 @@ function Appointment() {
                 slotIndex === index ? 'bg-blue-400 text-white' : 'border'
               }`}
             >
-              <p>{daySlots[0] && daysOfWeek[daySlots[0].datetime.getDay()]}</p>
-              <p>{daySlots[0] && daySlots[0].datetime.getDate()}</p>
+              {index === 0 && (
+                <>
+                  <p>{daysOfWeek[today.getDay()]}</p>
+                  <p>{today.getDate()}</p>
+                </>
+              )}
+              {index !== 0 && (
+                <>
+                  <p>
+                    {daySlots[0] && daysOfWeek[daySlots[0].datetime.getDay()]}
+                  </p>
+                  <p>{daySlots[0] && daySlots[0].datetime.getDate()}</p>
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -127,7 +139,7 @@ function Appointment() {
         <button
           onClick={onBookAppointment}
           disabled={!selectedSlot || isBooking}
-          className="bg-blue-400 text-white text-sm font-light px-20 py-3 rounded-full my-6 disabled:opacity-50"
+          className="bg-blue-400 text-white text-sm font-light px-20 py-3 rounded-full my-6 disabled:opacity-50 cursor-pointer"
         >
           {isBooking ? 'Booking...' : 'Book an appointment'}
         </button>

@@ -50,6 +50,7 @@ const loginAdmin = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     token,
+    user: admin,
     message: 'Admin logged in successfully',
   });
 });

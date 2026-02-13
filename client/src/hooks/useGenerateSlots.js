@@ -25,18 +25,18 @@ export default function useGenerateSlots({ appointments, doctorId }) {
         currentDate.setDate(today.getDate() + i);
 
         let endTime = new Date(currentDate);
+        endTime.setDate(today.getDate() + i);
         endTime.setHours(21, 0, 0, 0); // 9 PM
 
         // Start from 10 AM
-        if (i === 0) {
+        if (today.getDate() === currentDate.getDate()) {
           currentDate.setHours(
             currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10,
-            currentDate.getMinutes() > 30 ? 30 : 0,
-            0,
-            0,
           );
+          currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
         } else {
-          currentDate.setHours(10, 0, 0, 0);
+          currentDate.setHours(10);
+          currentDate.setMinutes(0);
         }
 
         let timeSlots = [];
