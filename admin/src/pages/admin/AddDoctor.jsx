@@ -68,7 +68,7 @@ function AddDoctor() {
     <form onSubmit={onSubmitHandler} className="m-5 w-full">
       <p className="mb-3 text-lg font-medium">Add Doctor</p>
       {error && <ErrorMessage message={error.message} />}
-      <div className="bg-white px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll">
+      <div className="bg-slate-100 dark:bg-slate-800 px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll dark:text-slate-200 text-slate-500">
         <div className="mb-8">
           <div className="flex items-center gap-4  text-gray-500">
             <label htmlFor="doc-img">
@@ -97,7 +97,7 @@ function AddDoctor() {
             <p className="text-red-500 text-sm">{state.errors.image}</p>
           )}
         </div>
-        <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
+        <div className="flex flex-col lg:flex-row items-start gap-10 ">
           <div className="w-full lg:flex-1 flex flex-col gap-4">
             <div className="flex-1 flex flex-col gap-1">
               <p>Your name</p>

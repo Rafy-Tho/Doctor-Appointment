@@ -24,10 +24,8 @@ function DoctorsList() {
               alt=""
             />
             <div className="p-4">
-              <p className="text-[#262626] text-lg font-medium">
-                {doctor.name}
-              </p>
-              <p className="text-[#5C5C5C] text-sm">{doctor.speciality}</p>
+              <p className=" text-lg font-medium">{doctor.name}</p>
+              <p className=" text-sm">{doctor.speciality}</p>
               <div className="mt-2 flex items-center gap-1 text-sm">
                 {isChangingAvailability && variables.doctorId === doctor._id ? (
                   <p className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></p>

@@ -18,7 +18,7 @@ function LoginForm({
           <span className="">{state}</span> Login
         </p>
         <div className="w-full ">
-          <p>Email</p>
+          <p className="dark:text-slate-300">Email</p>
           <input
             onChange={(e) => setEmail(e.target.value)}
             value={email}
@@ -29,7 +29,7 @@ function LoginForm({
           {errors.email && <ErrorMessage message={errors.email} />}
         </div>
         <div className="w-full ">
-          <p>Password</p>
+          <p className="dark:text-slate-300">Password</p>
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
