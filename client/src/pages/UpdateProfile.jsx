@@ -83,7 +83,6 @@ function UpdateProfile() {
               if (imagePreview) URL.revokeObjectURL(imagePreview);
               const file = e.target.files[0];
               setImage(file);
-              setImage(file);
               setImagePreview(file ? URL.createObjectURL(file) : null);
             }}
             type="file"
