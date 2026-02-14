@@ -15,6 +15,7 @@ import RootRedirect from './components/RootDirect';
 import LoginForm from './pages/LoginForm';
 import AdminLogin from './pages/AdminLogin';
 import DoctorLogin from './pages/DoctorLogin';
+import DoctorUpdateProfile from './pages/doctor/DoctorUpdateProfile';
 
 function App() {
   return (
@@ -45,6 +46,10 @@ function App() {
           <Route path="doctor-dashboard" element={<DoctorDashboard />} />
           <Route path="doctor-appointments" element={<DoctorAppointments />} />
           <Route path="doctor-profile" element={<DoctorProfile />} />
+          <Route
+            path="doctor-update-profile"
+            element={<DoctorUpdateProfile />}
+          />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

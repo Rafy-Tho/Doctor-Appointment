@@ -4,8 +4,8 @@ import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 
 function MyProfile() {
-  const { userData, isLoading, error } = useGetUserProfile();
-  if (isLoading) return <Loader />;
+  const { userData, isPending, error } = useGetUserProfile();
+  if (isPending) return <Loader />;
   if (error)
     return (
       <ErrorMessage message={error?.message || 'Failed to load profile'} />

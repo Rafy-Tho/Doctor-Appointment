@@ -1,4 +1,4 @@
-import { doctorFormValidate } from './validators';
+import { doctorFormValidate, doctorUpdateProfileValidate } from './validators';
 
 // Function to format the date eg. ( 20_01_2000 => 20 Jan 2000 )
 export const slotDateFormat = (slotDate) => {
@@ -29,6 +29,16 @@ export const validateAll = (values) => {
   if (!values.image) {
     errors.image = 'Image is required';
   }
+
+  return errors;
+};
+export const validateAllDoctor = (values) => {
+  const errors = {};
+
+  Object.keys(values).forEach((key) => {
+    const error = doctorUpdateProfileValidate(key, values[key]);
+    if (error) errors[key] = error;
+  });
 
   return errors;
 };
