@@ -26,7 +26,7 @@ function MyProfile() {
         {userData?.user?.name}
       </h2>
 
-      <hr className=" h-[1px] border-none" />
+      <hr className=" h-px border-none" />
 
       {/* CONTACT INFO */}
       <div>

@@ -11,7 +11,7 @@ function About() {
 
       <div className="my-10 flex flex-col md:flex-row gap-12">
         <img
-          className="w-full md:max-w-[360px]"
+          className="w-full md:max-w-90"
           src={assets.about_image}
           alt=""
         />

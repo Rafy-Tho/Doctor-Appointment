@@ -26,9 +26,6 @@ export function doctorProfileReducer(state, action) {
         errors: action.payload,
       };
 
-    case 'RESET_FORM':
-      return initialState;
-
     default:
       return state;
   }

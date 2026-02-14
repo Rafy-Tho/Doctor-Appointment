@@ -36,8 +36,6 @@ function DoctorUpdateProfile() {
       dispatch({ type: 'SET_ERRORS', payload: errors });
       return;
     }
-    console.log(state.values);
-
     updateDoctorProfile({
       fees: Number(state.values.fees),
       available: state.values.available,
@@ -74,7 +72,7 @@ function DoctorUpdateProfile() {
             name="line1"
             onChange={changeFieldHandler}
             className="w-full border p-2 rounded mb-2"
-            autoComplete="address-level1"
+            autoComplete="address-line1"
             id="address1"
           />
           {state?.errors?.line1 && (
@@ -83,7 +81,7 @@ function DoctorUpdateProfile() {
         </div>
 
         <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="address2">Address 2</label>
+          <label htmlFor="address-line2">Address 2</label>
           <input
             type="text"
             value={state.values.line2}

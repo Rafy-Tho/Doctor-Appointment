@@ -49,9 +49,9 @@ function DoctorProfile() {
         <div className="flex gap-2 py-2">
           <p>Address:</p>
           <p className="text-sm">
-            {doctor?.address.line1}
+            {doctor?.address?.line1}
             <br />
-            {doctor?.address.line2}
+            {doctor?.address?.line2}
           </p>
         </div>
 
