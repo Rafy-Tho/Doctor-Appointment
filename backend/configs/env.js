@@ -13,6 +13,9 @@ const ENV = {
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   CLOUDINARY_SECRET_KEY: process.env.CLOUDINARY_SECRET_KEY,
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  CLIENT_URL_1: process.env.CLIENT_URL_1,
+  CLIENT_URL_2: process.env.CLIENT_URL_2,
+  NODE_ENV: process.env.NODE_ENV,
 };
 
 module.exports = ENV;
