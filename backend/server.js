@@ -9,19 +9,16 @@ const connectCloudinary = require('./configs/cloudinary');
 const doctorRouter = require('./routes/doctorRoute');
 const adminRouter = require('./routes/adminRoute');
 const morgan = require('morgan');
-
 // configure environment variables
 
 const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: [ENV.CLIENT_URL_1, ENV.CLIENT_URL_2],
   }),
 );
 
-// configure database connection
-connectDB();
 // configure cloudinary
 connectCloudinary();
 // Morgan middleware
@@ -35,9 +32,20 @@ app.use('/api/v1/user', userRouter);
 app.use(notFound);
 app.use(errorMiddleware);
 
-// configure server port
-const port = ENV.PORT || 3000;
-// start server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+const port = ENV.PORT || 5000;
+
+const server = async () => {
+  try {
+    await connectDB();
+    if (ENV.NODE_ENV === 'development')
+      app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+      });
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+server();
+
+module.exports = app;
