@@ -23,6 +23,7 @@ export const validateLogin = ({ email, password }) => {
 
   return errors;
 };
+
 export const doctorFormValidate = (name, value) => {
   let error = '';
 
@@ -79,6 +80,33 @@ export const doctorFormValidate = (name, value) => {
 
     case 'image':
       if (value === null) error = 'Image is required';
+      break;
+
+    default:
+      break;
+  }
+
+  return error;
+};
+export const doctorUpdateProfileValidate = (name, value) => {
+  let error = '';
+
+  switch (name) {
+    case 'fees':
+      if (!value) error = 'Fees is required';
+      else if (value <= 0) error = 'Fees must be greater than 0';
+      break;
+
+    case 'line1':
+      if (!value.trim()) error = 'Address is required';
+      break;
+
+    case 'line2':
+      if (!value.trim()) error = 'Address is required';
+      break;
+
+    case 'available':
+      if (value === null) error = 'Available is required';
       break;
 
     default:

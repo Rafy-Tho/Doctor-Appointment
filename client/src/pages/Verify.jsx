@@ -10,10 +10,12 @@ function Verify() {
   const sessionId = searchParams.get('session_id');
   const appointmentId = searchParams.get('appointmentId');
   console.log({ sessionId, appointmentId });
+
   useEffect(() => {
     if (token && appointmentId && sessionId) {
       verifyStripe({ appointmentId, sessionId });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, appointmentId, sessionId]);
 
   return (

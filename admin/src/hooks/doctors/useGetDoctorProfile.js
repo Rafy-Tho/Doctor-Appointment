@@ -1,35 +1,37 @@
 import { useQuery } from '@tanstack/react-query';
-import userApiService from '../../configs/userApiServices';
+import { useEffect } from 'react';
+import doctorApiService from '../../configs/doctorApiServices';
 import { showError } from '../../utils/toast';
 import useAuth from '../useAuth';
-import { useEffect } from 'react';
 
-function useGetUserProfile() {
+function useGetDoctorProfile() {
   const { getProfile } = useAuth();
+
   const {
-    data: userData,
+    data: { doctor } = {},
     isPending,
     error,
   } = useQuery({
-    queryFn: () => userApiService.getProfile(),
-    queryKey: ['user'],
+    queryFn: doctorApiService.getProfile,
+    queryKey: ['doctor'],
   });
+
   useEffect(() => {
-    if (userData?.user) {
-      getProfile({ user: userData.user });
+    if (doctor) {
+      getProfile({ user: doctor });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData?.user]);
+  }, [doctor]);
   useEffect(() => {
     if (error) {
       showError(error.message);
     }
   }, [error]);
   return {
-    userData,
+    doctor,
     isPending,
     error,
   };
 }
 
-export default useGetUserProfile;
+export default useGetDoctorProfile;

@@ -40,7 +40,6 @@ const errorMiddleware = (err, req, res, next) => {
     success: false,
     message,
     // optional: stack trace in development
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
 

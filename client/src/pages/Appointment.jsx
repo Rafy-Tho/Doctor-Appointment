@@ -52,7 +52,7 @@ function Appointment() {
           />
         </div>
 
-        <div className="flex-1 border rounded-lg p-8 py-7 mx-2 sm:mx-0 mt-[-80px] sm:mt-0">
+        <div className="flex-1 border rounded-lg p-8 py-7 mx-2 sm:mx-0 -mt-20 sm:mt-0">
           {/* ----- Doc Info ----- */}
           <p className="flex items-center gap-2 text-3xl font-medium ">
             {docInfo.name}{' '}
@@ -72,7 +72,7 @@ function Appointment() {
             <p className="flex items-center gap-1 text-sm font-medium mt-3">
               About <img className="w-3" src={assets.info_icon} alt="Info" />
             </p>
-            <p className="text-sm max-w-[700px] mt-1">{docInfo.about}</p>
+            <p className="text-sm max-w-175 mt-1">{docInfo.about}</p>
           </div>
 
           <p className="font-medium mt-4">
@@ -126,7 +126,7 @@ function Appointment() {
             <p
               key={idx}
               onClick={() => setSelectedSlot(slot)}
-              className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
+              className={`text-sm font-light shrink-0 px-5 py-2 rounded-full cursor-pointer ${
                 selectedSlot === slot ? 'bg-blue-400 text-white' : 'border'
               }`}
             >
