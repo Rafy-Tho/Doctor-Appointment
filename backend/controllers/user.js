@@ -7,7 +7,8 @@ const User = require('../models/User');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const stripe = require('stripe');
-const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
+
+const stripeInstance = new stripe(ENV.STRIPE_SECRET_KEY);
 // @des Register a new user
 // @route POST /api/user/register
 // @access Public

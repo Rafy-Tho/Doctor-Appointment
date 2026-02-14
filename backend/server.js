@@ -33,7 +33,7 @@ app.use(notFound);
 app.use(errorMiddleware);
 
 const port = ENV.PORT || 5000;
-
+console.log(ENV.STRIPE_SECRET_KEY);
 const server = async () => {
   try {
     await connectDB();
@@ -47,5 +47,3 @@ const server = async () => {
   }
 };
 server();
-
-module.exports = app;
