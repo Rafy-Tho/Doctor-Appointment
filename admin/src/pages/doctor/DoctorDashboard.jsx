@@ -70,12 +70,12 @@ function DoctorDashboard() {
             >
               <img
                 className="rounded-full w-10"
-                src={appointment.userData.image}
+                src={appointment.userData?.image}
                 alt=""
               />
               <div className="flex-1 text-sm">
                 <p className="text-slate-600 dark:text-slate-300 font-medium">
-                  {appointment.userData.name}
+                  {appointment.userData?.name}
                 </p>
                 <p className="text-slate-400 dark:text-slate-500">
                   Booking on {slotDateFormat(appointment.slotDate)}

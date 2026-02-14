@@ -33,19 +33,19 @@ function DoctorAppointments() {
           <p>Fees</p>
           <p>Action</p>
         </div>
-        {appointments.map((appointment, index) => (
+        {appointments?.map((appointment, index) => (
           <div
             className="flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 items-center text-slate-600 dark:text-slate-300 py-3 px-6 border-b hover:bg-gray-50 dark:hover:bg-slate-700"
-            key={index}
+            key={appointment._id}
           >
-            <p className="max-sm:hidden">{index}</p>
+            <p className="max-sm:hidden">{index + 1}</p>
             <div className="flex items-center gap-2">
               <img
-                src={appointment.userId.image}
+                src={appointment.userId?.image}
                 className="w-8 rounded-full"
                 alt=""
               />{' '}
-              <p>{appointment.userId.name}</p>
+              <p>{appointment.userId?.name}</p>
             </div>
             <div>
               <p className="text-xs inline border border-primary px-2 rounded-full">
@@ -53,7 +53,7 @@ function DoctorAppointments() {
               </p>
             </div>
             <p className="max-sm:hidden">
-              {calculateAge(appointment.userId.dob)}
+              {calculateAge(appointment.userId?.dob)}
             </p>
             <p>
               {slotDateFormat(appointment.slotDate)}, {appointment.slotTime}

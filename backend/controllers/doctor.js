@@ -173,6 +173,7 @@ const doctorDashboard = catchAsyncHandler(async (req, res, next) => {
         earningsData: [
           {
             $match: {
+              cancelled: { $ne: true },
               $or: [{ isCompleted: true }, { payment: true }],
             },
           },
@@ -204,7 +205,7 @@ const doctorDashboard = catchAsyncHandler(async (req, res, next) => {
         ],
 
         latestAppointments: [
-          { $sort: { date: -1 } },
+          { $sort: { slotDate: -1 } },
           { $limit: 5 }, // ✅ LIMIT 5 HERE
           {
             $lookup: {
