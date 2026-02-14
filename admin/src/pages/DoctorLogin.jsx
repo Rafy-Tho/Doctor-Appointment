@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import Loader from '../components/Loader';
+import useDoctorLogin from '../hooks/doctors/useDoctorLogin';
 import { validateLogin } from '../utils/validators';
 import LoginForm from './LoginForm';
-import useDoctorLogin from '../hooks/doctors/useDoctorLogin';
 
 function DoctorLogin() {
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [password, setPassword] = useState('John@1234');
+  const [email, setEmail] = useState('richard.james@example.com');
+  const [password, setPassword] = useState('StrongPass123!');
   const [errors, setErrors] = useState({});
   const { loginDoctor, isPending } = useDoctorLogin();
 
