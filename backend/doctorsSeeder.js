@@ -1,6 +1,7 @@
 const connectDB = require('./configs/database');
 const doctors = require('./configs/doctors');
 const Doctor = require('./models/Doctor');
+const bcrypt = require('bcrypt');
 
 // Connect to Mong
 connectDB();
@@ -11,10 +12,15 @@ const seedDoctors = async () => {
     await Doctor.deleteMany();
     console.log('Old doctors removed');
 
-    // Insert new doctors
-    await Doctor.insertMany(doctors);
-    console.log('Doctors seeded successfully');
+    const hashedDoctors = await Promise.all(
+      doctors.map(async (doc) => ({
+        ...doc,
+        password: await bcrypt.hash(doc.password, 10),
+      })),
+    );
 
+    await Doctor.insertMany(hashedDoctors);
+    console.log('Doctors seeded successfully');
     process.exit();
   } catch (error) {
     console.error(error);

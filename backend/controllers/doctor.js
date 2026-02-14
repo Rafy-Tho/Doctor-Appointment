@@ -14,6 +14,7 @@ const doctorLogin = catchAsyncHandler(async (req, res, next) => {
   }
   // Check if doctor exists
   const doctor = await Doctor.findOne({ email }).select('+password');
+
   if (!doctor) {
     return next(new AppError('Invalid email or password', 401));
   }
@@ -40,7 +41,9 @@ const appointmentsDoctor = catchAsyncHandler(async (req, res, next) => {
   if (!doctor) {
     return next(new AppError('Doctor not found', 404));
   }
-  const appointments = await Appointment.find({ doctorId: doctor._id });
+  const appointments = await Appointment.find({
+    doctorId: doctor._id,
+  }).populate('userId', 'name image dob');
   res.status(200).json({
     success: true,
     appointments,
@@ -159,12 +162,75 @@ const doctorDashboard = catchAsyncHandler(async (req, res, next) => {
   if (!doctor) {
     return next(new AppError('Doctor not found', 404));
   }
-  const appointments = await Appointment.find({ doctorId: doctor._id });
 
+  const dashData = await Appointment.aggregate([
+    {
+      $match: { doctorId: doctor._id }, // filter doctor's appointments
+    },
+    {
+      $facet: {
+        // 1️⃣ Total earnings
+        earningsData: [
+          {
+            $match: {
+              $or: [{ isCompleted: true }, { payment: true }],
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              totalEarnings: { $sum: '$amount' },
+            },
+          },
+        ],
+
+        // 2️⃣ Total appointments
+        appointmentCount: [
+          {
+            $count: 'totalAppointments',
+          },
+        ],
+
+        // 3️⃣ Unique patients count
+        patientCount: [
+          {
+            $group: {
+              _id: '$userId',
+            },
+          },
+          {
+            $count: 'totalPatients',
+          },
+        ],
+
+        latestAppointments: [
+          { $sort: { date: -1 } },
+          { $limit: 5 }, // ✅ LIMIT 5 HERE
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'userData',
+            },
+          },
+          { $unwind: '$userData' },
+          {
+            $project: {
+              slotDate: 1,
+              isCompleted: 1,
+              cancelled: 1,
+              'userData.name': 1,
+              'userData.image': 1,
+            },
+          },
+        ],
+      },
+    },
+  ]);
   res.status(200).json({
     success: true,
-    doctor,
-    appointments,
+    ...dashData[0],
     message: 'Doctor dashboard retrieved successfully',
   });
 });

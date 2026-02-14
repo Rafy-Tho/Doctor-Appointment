@@ -14,7 +14,12 @@ function useGetUserProfile() {
     queryFn: () => userApiService.getProfile(),
     queryKey: ['user'],
   });
-
+  useEffect(() => {
+    if (userData?.user) {
+      getProfile({ user: userData.user });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData?.user]);
   useEffect(() => {
     if (error) {
       showError(error.message);

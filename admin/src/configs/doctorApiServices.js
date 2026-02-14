@@ -24,6 +24,7 @@ const doctorApiService = {
   getDoctorsList: () => helperAxiosInstance.get('/doctor/doctor-list'),
 
   changeAvailability: () => helperAxiosInstance.patch('/doctor/availability'),
+  getDashboard: () => helperAxiosInstance.get('/doctor/dashboard'),
 };
 
 export default doctorApiService;
