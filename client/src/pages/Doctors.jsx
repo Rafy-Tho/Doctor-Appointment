@@ -1,15 +1,15 @@
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
-import useGetDoctors from '../hooks/doctors/useGetDoctors';
-import ErrorMessage from '../components/ErrorMessage';
-import Loader from '../components/Loader';
+import useGetDoctors from "../hooks/doctors/useGetDoctors";
+import ErrorMessage from "../components/ErrorMessage";
+import Loader from "../components/Loader";
 const specialities = [
-  'General physician',
-  'Gynecologist',
-  'Pediatrician',
-  'Dermatologies',
-  'Neurologist',
-  'Gastroenterologist',
+  "General physician",
+  "Gynecologist",
+  "Pediatrician",
+  "Dermatologies",
+  "Neurologist",
+  "Gastroenterologist",
 ];
 function Doctors() {
   const { speciality } = useParams();
@@ -18,7 +18,7 @@ function Doctors() {
   if (isPending) return <Loader />;
   if (error)
     return (
-      <ErrorMessage message={error?.message || 'Failed to load doctors'} />
+      <ErrorMessage message={error?.message || "Failed to load doctors"} />
     );
 
   const { doctors } = data;
@@ -41,8 +41,8 @@ function Doctors() {
                 `w-fit rounded-lg px-3 py-1 border transition-all duration-200
        ${
          isActive
-           ? 'border-slate-400 bg-slate-400 text-white dark:text-slate-800'
-           : 'border-slate-300 hover:bg-slate-200 hover:text-slate-800 hover:-translate-y-0.5'
+           ? "border-slate-400 bg-slate-400 text-white dark:text-slate-800"
+           : "border-slate-300 hover:bg-slate-200 hover:text-slate-800 hover:-translate-y-0.5"
        }`
               }
             >
@@ -51,7 +51,7 @@ function Doctors() {
           ))}
         </div>
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pt-5 gap-y-6 px-3 sm:px-0 max-sm:w-xs">
-          {filterDoctors.slice(0, 10).map((doctor, index) => (
+          {filterDoctors.map((doctor, index) => (
             <div
               className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer"
               key={index}

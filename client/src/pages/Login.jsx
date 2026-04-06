@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import useUserLogin from '../hooks/user/useUserLogin';
-import { validateLogin } from '../utils/validators';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import useUserLogin from "../hooks/user/useUserLogin";
+import { validateLogin } from "../utils/validators";
 
 function Login() {
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [password, setPassword] = useState('John@1234');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { loginUser, isPending } = useUserLogin();
 
@@ -53,13 +53,13 @@ function Login() {
           )}
         </div>
         <button
-          className={`${isPending ? 'bg-slate-400 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'} text-slate-800 w-full py-2 my-2 rounded-md text-base`}
+          className={`${isPending ? "bg-slate-400 cursor-not-allowed" : "bg-blue-500 cursor-pointer"} text-slate-800 w-full py-2 my-2 rounded-md text-base`}
         >
-          {isPending ? 'Logging in...' : 'Login'}
+          {isPending ? "Logging in..." : "Login"}
         </button>
 
         <p>
-          Create an new account?{' '}
+          Create an new account?{" "}
           <Link
             onClick={() => scrollTo(0, 0)}
             to="/register"

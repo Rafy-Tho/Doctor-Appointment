@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import useUserRegister from '../hooks/user/useUserRegister';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import useUserRegister from "../hooks/user/useUserRegister";
 
-import { validateSignup } from '../utils/validators';
+import { validateSignup } from "../utils/validators";
 
 function Signup() {
-  const [name, setName] = useState('john_doe');
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [password, setPassword] = useState('John@1234');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { registerUser, isPending } = useUserRegister();
 
@@ -73,13 +73,13 @@ function Signup() {
         <button
           disabled={isPending}
           className={` text-slate-800  w-full py-2 my-2 rounded-md text-base cursor-pointer ${
-            isPending ? 'cursor-not-allowed bg-slate-400' : 'bg-blue-500'
+            isPending ? "cursor-not-allowed bg-slate-400" : "bg-blue-500"
           }`}
         >
-          {isPending ? 'Creating account...' : 'Create account'}
+          {isPending ? "Creating account..." : "Create account"}
         </button>
         <p>
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link
             onClick={() => scrollTo(0, 0)}
             to="/login"
