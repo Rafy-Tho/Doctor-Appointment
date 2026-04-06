@@ -37,13 +37,13 @@ const port = ENV.PORT || 5000;
 const server = async () => {
   try {
     await connectDB();
-    if (ENV.NODE_ENV === "development")
-      app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-      });
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
   } catch (error) {
     console.log(error);
     process.exit(1);
   }
 };
+
 server();
