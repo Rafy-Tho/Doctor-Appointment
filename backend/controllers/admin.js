@@ -1,18 +1,18 @@
-const catchAsyncHandler = require('../middleware/catchAsyncHandler');
-const AppError = require('../middleware/customError');
-const Admin = require('../models/admin');
-const Appointment = require('../models/Appointment');
-const Doctor = require('../models/Doctor');
-const cloudinary = require('cloudinary').v2;
-const fs = require('fs');
-const User = require('../models/User');
+const catchAsyncHandler = require("../middleware/catchAsyncHandler");
+const AppError = require("../middleware/customError");
+const Admin = require("../models/Admin");
+const Appointment = require("../models/Appointment");
+const Doctor = require("../models/Doctor");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+const User = require("../models/User");
 // @des Register admin
 // @route POST /api/admin/register
 // @access Public
 const registerAdmin = catchAsyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
-    return next(new AppError('Please provide name, email, and password', 400));
+    return next(new AppError("Please provide name, email, and password", 400));
   }
   const admin = await Admin.create({
     name,
@@ -25,7 +25,7 @@ const registerAdmin = catchAsyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     token,
-    message: 'Admin registered successfully',
+    message: "Admin registered successfully",
   });
 });
 // @des Login admin
@@ -34,15 +34,15 @@ const registerAdmin = catchAsyncHandler(async (req, res, next) => {
 const loginAdmin = catchAsyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return next(new AppError('Please provide email and password', 400));
+    return next(new AppError("Please provide email and password", 400));
   }
-  const admin = await Admin.findOne({ email }).select('+password');
+  const admin = await Admin.findOne({ email }).select("+password");
   if (!admin) {
-    return next(new AppError('Invalid credentials', 401));
+    return next(new AppError("Invalid credentials", 401));
   }
   const isMatch = await admin.comparePassword(password);
   if (!isMatch) {
-    return next(new AppError('Invalid credentials', 401));
+    return next(new AppError("Invalid credentials", 401));
   }
   // Generate token
   const token = admin.generateJWT();
@@ -51,7 +51,7 @@ const loginAdmin = catchAsyncHandler(async (req, res, next) => {
     success: true,
     token,
     user: admin,
-    message: 'Admin logged in successfully',
+    message: "Admin logged in successfully",
   });
 });
 // @des Get appointments of all doctors
@@ -60,13 +60,13 @@ const loginAdmin = catchAsyncHandler(async (req, res, next) => {
 const adminAppointmentsDoctor = catchAsyncHandler(async (req, res, next) => {
   const admin = await Admin.findById(req.admin.id);
   if (!admin) {
-    return next(new AppError('Not authorized to view appointments', 404));
+    return next(new AppError("Not authorized to view appointments", 404));
   }
-  const appointments = await Appointment.find({}).populate('doctorId userId');
+  const appointments = await Appointment.find({}).populate("doctorId userId");
   res.status(200).json({
     success: true,
     appointments,
-    message: 'Appointments retrieved successfully',
+    message: "Appointments retrieved successfully",
   });
 });
 
@@ -77,21 +77,21 @@ const adminAppointmentsDoctorCancel = catchAsyncHandler(
   async (req, res, next) => {
     const admin = await Admin.findById(req.admin.id);
     if (!admin) {
-      return next(new AppError('Not authorized to cancel appointment', 404));
+      return next(new AppError("Not authorized to cancel appointment", 404));
     }
     const appointment = await Appointment.findById(req.params.appointmentId);
     if (!appointment) {
-      return next(new AppError('Appointment not found', 404));
+      return next(new AppError("Appointment not found", 404));
     }
     if (appointment.cancelled) {
-      return next(new AppError('Appointment already canceled', 400));
+      return next(new AppError("Appointment already canceled", 400));
     }
     appointment.cancelled = true;
     await appointment.save();
     res.status(200).json({
       success: true,
       appointment,
-      message: 'Appointment canceled successfully',
+      message: "Appointment canceled successfully",
     });
   },
 );
@@ -112,23 +112,23 @@ const adminAddDoctor = catchAsyncHandler(async (req, res, next) => {
   } = req.body;
   const imageFile = req.file;
   if (!imageFile) {
-    return next(new AppError('Please upload an image', 400));
+    return next(new AppError("Please upload an image", 400));
   }
   if (!name || !email || !password || !speciality || !degree || !experience) {
-    return next(new AppError('Please provide all fields', 400));
+    return next(new AppError("Please provide all fields", 400));
   }
   const admin = await Admin.findById(req.admin.id);
   if (!admin) {
-    return next(new AppError('Not authorized to add doctor', 404));
+    return next(new AppError("Not authorized to add doctor", 404));
   }
   // Upload image to Cloudinary
   const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-    resource_type: 'image',
-    folder: 'image',
+    resource_type: "image",
+    folder: "image",
   });
   // Delete local file
   fs.unlink(imageFile.path, (err) => {
-    if (err) console.error('Failed to delete local file:', err);
+    if (err) console.error("Failed to delete local file:", err);
   });
   // Create doctor
   const doctorData = {
@@ -148,7 +148,7 @@ const adminAddDoctor = catchAsyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     doctor,
-    message: 'Doctor added successfully',
+    message: "Doctor added successfully",
   });
 });
 // @des Change doctor availability
@@ -159,19 +159,19 @@ const adminChangeDoctorAvailability = catchAsyncHandler(
     const admin = await Admin.findById(req.admin.id);
     if (!admin) {
       return next(
-        new AppError('Not authorized to change doctor availability', 404),
+        new AppError("Not authorized to change doctor availability", 404),
       );
     }
     const doctor = await Doctor.findById(req.params.doctorId);
     if (!doctor) {
-      return next(new AppError('Doctor not found', 404));
+      return next(new AppError("Doctor not found", 404));
     }
     doctor.available = !doctor.available;
     await doctor.save();
     res.status(200).json({
       success: true,
       doctor,
-      message: 'Doctor availability updated successfully',
+      message: "Doctor availability updated successfully",
     });
   },
 );
@@ -181,13 +181,13 @@ const adminChangeDoctorAvailability = catchAsyncHandler(
 const adminAllDoctors = catchAsyncHandler(async (req, res, next) => {
   const admin = await Admin.findById(req.admin.id);
   if (!admin) {
-    return next(new AppError('Not authorized to view doctors', 404));
+    return next(new AppError("Not authorized to view doctors", 404));
   }
   const doctors = await Doctor.find({});
   res.status(200).json({
     success: true,
     doctors,
-    message: 'Doctors retrieved successfully',
+    message: "Doctors retrieved successfully",
   });
 });
 // @des Get dashboard stats
@@ -197,7 +197,7 @@ const adminDashboard = catchAsyncHandler(async (req, res, next) => {
   const admin = await Admin.findById(req.admin.id);
 
   if (!admin) {
-    return next(new AppError('Not authorized to view dashboard stats', 404));
+    return next(new AppError("Not authorized to view dashboard stats", 404));
   }
 
   const totalDoctors = await Doctor.countDocuments();
@@ -206,14 +206,14 @@ const adminDashboard = catchAsyncHandler(async (req, res, next) => {
   const latestAppointments = await Appointment.find({})
     .sort({ createdAt: -1 })
     .limit(5)
-    .populate('doctorId');
+    .populate("doctorId");
   res.status(200).json({
     success: true,
     totalDoctors,
     totalAppointments,
     totalPatients,
     latestAppointments,
-    message: 'Dashboard stats retrieved successfully',
+    message: "Dashboard stats retrieved successfully",
   });
 });
 
