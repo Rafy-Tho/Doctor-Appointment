@@ -1,12 +1,12 @@
-const ENV = require('../configs/env');
-const catchAsyncHandler = require('../middleware/catchAsyncHandler');
-const AppError = require('../middleware/customError');
-const Appointment = require('../models/Appointment');
-const Doctor = require('../models/Doctor');
-const User = require('../models/User');
-const cloudinary = require('cloudinary').v2;
-const fs = require('fs');
-const stripe = require('stripe');
+const ENV = require("../configs/env");
+const catchAsyncHandler = require("../middleware/catchAsyncHandler");
+const AppError = require("../middleware/customError");
+const Appointment = require("../models/Appointment");
+const Doctor = require("../models/Doctor");
+const User = require("../models/User");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+const stripe = require("stripe");
 
 const stripeInstance = new stripe(ENV.STRIPE_SECRET_KEY);
 // @des Register a new user
@@ -15,7 +15,7 @@ const stripeInstance = new stripe(ENV.STRIPE_SECRET_KEY);
 const registerUser = catchAsyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
-    return next(new AppError('Please provide all fields', 400));
+    return next(new AppError("Please provide all fields", 400));
   }
   const user = await User.create({ name, email, password });
 
@@ -25,7 +25,7 @@ const registerUser = catchAsyncHandler(async (req, res, next) => {
     success: true,
     user,
     token,
-    message: 'User registered successfully',
+    message: "User registered successfully",
   });
 });
 // @des Login a user
@@ -34,33 +34,33 @@ const registerUser = catchAsyncHandler(async (req, res, next) => {
 const loginUser = catchAsyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return next(new AppError('Please provide email and password', 400));
+    return next(new AppError("Please provide email and password", 400));
   }
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select("+password");
   if (!user) {
-    return next(new AppError('Invalid email or password', 401));
+    return next(new AppError("Invalid email or password", 401));
   }
   const isPasswordMatched = await user.comparePassword(password);
   if (!isPasswordMatched) {
-    return next(new AppError('Invalid email or password', 401));
+    return next(new AppError("Invalid email or password", 401));
   }
   const token = user.generateJWT();
   res.status(200).json({
     success: true,
     token,
     user,
-    message: 'User logged in successfully',
+    message: "User logged in successfully",
   });
 });
 const getUserProfile = catchAsyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
   if (!user) {
-    return next(new AppError('User not found', 404));
+    return next(new AppError("User not found", 404));
   }
   res.status(200).json({
     success: true,
     user,
-    message: 'User profile retrieved successfully',
+    message: "User profile retrieved successfully",
   });
 });
 // @des Update user profile
@@ -71,22 +71,22 @@ const updateUserProfile = catchAsyncHandler(async (req, res, next) => {
   const imageFile = req.file;
 
   if (!name && !phone && !address && !dob && !gender && !imageFile) {
-    return next(new AppError('At least one field is required', 400));
+    return next(new AppError("At least one field is required", 400));
   }
   const user = await User.findById(req.user.id);
   if (!user) {
-    return next(new AppError('User not found', 404));
+    return next(new AppError("User not found", 404));
   }
   if (imageFile) {
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-      resource_type: 'image',
-      folder: 'image',
+      resource_type: "image",
+      folder: "image",
     });
 
     user.image = imageUpload.secure_url;
     // Delete local file
     fs.unlink(imageFile.path, (err) => {
-      if (err) console.error('Failed to delete local file:', err);
+      if (err) console.error("Failed to delete local file:", err);
     });
   }
 
@@ -102,7 +102,7 @@ const updateUserProfile = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     user,
-    message: 'User profile updated successfully',
+    message: "User profile updated successfully",
   });
 });
 // @des Book an appointment with a doctor
@@ -113,16 +113,16 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
   const { slotDate } = req.body;
   // Check if doctorId is valid
   if (!doctorId || !slotDate) {
-    return next(new AppError('All fields are required', 400));
+    return next(new AppError("All fields are required", 400));
   }
   // Check if doctor exists
   const doctor = await Doctor.findById(doctorId);
   if (!doctor) {
-    return next(new AppError('Doctor not found', 404));
+    return next(new AppError("Doctor not found", 404));
   }
   // Check if doctor is available
   if (!doctor.available) {
-    return next(new AppError('Doctor not available', 400));
+    return next(new AppError("Doctor not available", 400));
   }
   // Check if slot is already booked
   const appointmentExists = await Appointment.findOne({
@@ -130,7 +130,7 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
     slotDate,
   });
   if (appointmentExists) {
-    return next(new AppError('Slot already booked', 400));
+    return next(new AppError("Slot already booked", 400));
   }
   // Create appointment
   const appointment = new Appointment({
@@ -143,7 +143,7 @@ const bookAppointment = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     appointment,
-    message: 'Appointment booked successfully',
+    message: "Appointment booked successfully",
   });
 });
 // @des Cancel an appointment
@@ -153,20 +153,20 @@ const cancelAppointment = catchAsyncHandler(async (req, res, next) => {
   const { appointmentId } = req.params;
   // Check if appointmentId is valid
   if (!appointmentId) {
-    return next(new AppError('Appointment ID is required', 400));
+    return next(new AppError("Appointment ID is required", 400));
   }
   // Check if appointment exists
   const appointment = await Appointment.findById(appointmentId);
   if (!appointment) {
-    return next(new AppError('Appointment not found', 404));
+    return next(new AppError("Appointment not found", 404));
   }
   // Check if appointment belongs to user
   if (appointment.userId.toString() !== req.user.id) {
-    return next(new AppError('Not authorized to cancel this appointment', 403));
+    return next(new AppError("Not authorized to cancel this appointment", 403));
   }
   // Check if appointment is already cancelled
   if (appointment.cancelled) {
-    return next(new AppError('Appointment already cancelled', 400));
+    return next(new AppError("Appointment already cancelled", 400));
   }
   // Mark appointment as cancelled
   appointment.cancelled = true;
@@ -174,7 +174,7 @@ const cancelAppointment = catchAsyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     appointment,
-    message: 'Appointment cancelled successfully',
+    message: "Appointment cancelled successfully",
   });
 });
 // @des List all appointments
@@ -183,12 +183,12 @@ const cancelAppointment = catchAsyncHandler(async (req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const listAppointments = catchAsyncHandler(async (req, res, next) => {
   const appointments = await Appointment.find({ userId: req.user.id }).populate(
-    'doctorId',
+    "doctorId",
   );
   res.status(200).json({
     success: true,
     appointments,
-    message: 'Appointments retrieved successfully',
+    message: "Appointments retrieved successfully",
   });
 });
 const getAppointmentWithSpecificDoctor = catchAsyncHandler(
@@ -196,7 +196,7 @@ const getAppointmentWithSpecificDoctor = catchAsyncHandler(
     const { doctorId } = req.params;
     // Check if doctorId is valid
     if (!doctorId) {
-      return next(new AppError('Doctor ID is required', 400));
+      return next(new AppError("Doctor ID is required", 400));
     }
     const now = new Date();
 
@@ -211,13 +211,13 @@ const getAppointmentWithSpecificDoctor = catchAsyncHandler(
     );
 
     if (!appointments) {
-      return next(new AppError('Appointment not found', 404));
+      return next(new AppError("Appointment not found", 404));
     }
 
     res.status(200).json({
       success: true,
       appointments,
-      message: 'Appointment retrieved successfully',
+      message: "Appointment retrieved successfully",
     });
   },
 );
@@ -226,16 +226,16 @@ const getAppointmentWithSpecificDoctor = catchAsyncHandler(
 // @access Private
 const paymentStripe = catchAsyncHandler(async (req, res, next) => {
   const { appointmentId } = req.params;
-  const { origin } = req.headers;
+  const origin = ENV.CLIENT_URL_1;
 
   const appointment = await Appointment.findById(appointmentId);
 
   if (appointment.userId.toString() !== req.user.id) {
-    return next(new AppError('Not authorized', 403));
+    return next(new AppError("Not authorized", 403));
   }
 
   if (!appointment || appointment.cancelled) {
-    return next(new AppError('Appointment Cancelled or not found', 400));
+    return next(new AppError("Appointment Cancelled or not found", 400));
   }
 
   const currency = ENV.CURRENCY.toLowerCase();
@@ -245,7 +245,7 @@ const paymentStripe = catchAsyncHandler(async (req, res, next) => {
       price_data: {
         currency,
         product_data: {
-          name: 'Appointment Fees',
+          name: "Appointment Fees",
         },
         unit_amount: appointment.amount * 100,
       },
@@ -257,13 +257,13 @@ const paymentStripe = catchAsyncHandler(async (req, res, next) => {
     success_url: `${origin}/verify?session_id={CHECKOUT_SESSION_ID}&appointmentId=${appointment._id}`,
     cancel_url: `${origin}/verify?success=false&appointmentId=${appointment._id}`,
     line_items: line_items,
-    mode: 'payment',
+    mode: "payment",
   });
 
   res.json({
     success: true,
     session_url: session.url,
-    message: 'Redirecting to payment gateway',
+    message: "Redirecting to payment gateway",
   });
 });
 // @des Verify Stripe payment
@@ -275,20 +275,20 @@ const verifyStripe = catchAsyncHandler(async (req, res, next) => {
   const { sessionId } = req.body;
   // Check if sessionId is valid
   if (!sessionId) {
-    return next(new AppError('Session ID is required', 400));
+    return next(new AppError("Session ID is required", 400));
   }
   const appointment = await Appointment.findById(appointmentId);
   if (!appointment || appointment.userId.toString() !== req.user.id) {
-    return next(new AppError('Appointment not found or unauthorized', 403));
+    return next(new AppError("Appointment not found or unauthorized", 403));
   }
   const session = await stripeInstance.checkout.sessions.retrieve(sessionId);
-  if (session.payment_status !== 'paid') {
-    return res.json({ success: false, message: 'Payment not completed' });
+  if (session.payment_status !== "paid") {
+    return res.json({ success: false, message: "Payment not completed" });
   }
 
   appointment.payment = true;
   await appointment.save();
-  return res.json({ success: true, message: 'Payment Successful' });
+  return res.json({ success: true, message: "Payment Successful" });
 });
 
 module.exports = {
